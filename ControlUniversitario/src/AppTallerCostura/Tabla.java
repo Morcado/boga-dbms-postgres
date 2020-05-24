@@ -14,6 +14,8 @@ public class Tabla {
     protected String nombre ;
     protected List<String> columnas ;
     protected String selectSQL ;
+    protected String updateSQL ;
+    protected String deleteSQL ;
     
     public Tabla( String nombre )   {
         this.nombre = nombre ;
@@ -29,5 +31,13 @@ public class Tabla {
     
     public String selectSQL() {
         return selectSQL ;
+    }
+    
+    public String updateSQL()   {
+        return updateSQL ;
+    }
+    
+    public String deleteSQL()   {
+        return deleteSQL ;
     }
 }

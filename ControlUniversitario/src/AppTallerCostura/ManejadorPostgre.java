@@ -31,6 +31,7 @@ public class ManejadorPostgre extends javax.swing.JFrame {
         tallerCostura = new ConexionPostgre();
         tablas = new ArrayList<Tabla>();
         
+        /*Agregar las tablas del modelo de la base de datos.*/
         tablas.add( new Cliente() );
         
         tablas.forEach( c ->  choice1.addItem( c.Nombre() ) );
@@ -40,8 +41,15 @@ public class ManejadorPostgre extends javax.swing.JFrame {
         try {
             DefaultTableModel modeloTabla = tallerCostura.CreaModeloTabla( tabla );
             jTable2.setModel( modeloTabla );
+            DefaultTableModel modeloRegistro = tallerCostura.CreaModeloTabla( tabla );
+            jTable1.setModel( modeloRegistro );
+            
             List<String[]> registros = tallerCostura.Registros( tabla );
             registros.forEach(r -> modeloTabla.addRow( r ) );
+            
+            String[] registro = new String[tabla.Columnas().size()];
+            modeloRegistro.addRow( registro );
+            
             System.out.println("Mostrar terminado");
         } catch (Exception e) {
             System.out.println("Error de mostrar: " + e.getMessage());
@@ -193,8 +201,8 @@ public class ManejadorPostgre extends javax.swing.JFrame {
                     .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(choice1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(13, 13, 13)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3)
                     .addComponent(jButton2)
@@ -231,7 +239,9 @@ public class ManejadorPostgre extends javax.swing.JFrame {
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
-        idRegistroSeleccionado = Integer.parseInt( jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString() );
+        if( tablaSeleccionada != null ) {
+            idRegistroSeleccionado = Integer.parseInt( jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString() );
+        }
     }//GEN-LAST:event_jTable2MouseClicked
 
     private void choice1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_choice1ActionPerformed
