@@ -13,6 +13,7 @@ import javax.swing.text.html.HTMLEditorKit.Parser;
 import java.io.Console;
 import java.sql.*;
 import java.util.*;  
+import java.awt.event.* ;
 
 /**
  *
@@ -29,40 +30,45 @@ public class ManejadorPostgre extends javax.swing.JFrame {
         initComponents();
         tallerCostura = new ConexionPostgre();
         tablas = new ArrayList<Tabla>();
+        
         tablas.add( new Cliente() );
         
-        tablas.forEach( c ->  choice1.add( c.Nombre() ) );
+        tablas.forEach( c ->  choice1.addItem( c.Nombre() ) );
     }
     
-    public void ShowData(Tabla tabla) {
+    public void ShowData( Tabla tabla ) {
         try {
             DefaultTableModel modeloTabla = tallerCostura.CreaModeloTabla( tabla );
             jTable2.setModel( modeloTabla );
             List<String[]> registros = tallerCostura.Registros( tabla );
-            
-            registros.forEach((r) -> {
-                modeloTabla.addRow( r );
-            });
+            registros.forEach(r -> modeloTabla.addRow( r ) );
             System.out.println("Mostrar terminado");
         } catch (Exception e) {
             System.out.println("Error de mostrar: " + e.getMessage());
         }
     }
 
-    public void InsertData( String[] registroInsertar, Tabla tabla ) {
-        tallerCostura.InsertDataTo( registroInsertar, tabla );
-        ShowData( tabla );
+    public void InsertData() {
+        String[] registro = new String[tablaSeleccionada.Columnas().size()];
+        
+        
+        tallerCostura.InsertDataTo( registro, tablaSeleccionada );
+        ShowData( tablaSeleccionada );
     }
 
-    public void DeleteData( String[] registroEliminar, Tabla tabla ) {
-        tallerCostura.DeleteDataFrom( registroEliminar, tabla );
-        ShowData( tabla );
+    public void DeleteData() {     
+        tallerCostura.DeleteDataFrom( idRegistroSeleccionado, tablaSeleccionada );
+        ShowData( tablaSeleccionada );
     }
 
-    public void ModifyData( String[] regOriginal, String[] regNuevo, Tabla tabla ) {
-        tallerCostura.ModifyRow( regOriginal, regNuevo, tabla );
-        ShowData( tabla );
+    public void ModifyData() {
+        String[] newInfo = new String[tablaSeleccionada.Columnas().size()];
+        
+        tallerCostura.ModifyRow( idRegistroSeleccionado, newInfo, tablaSeleccionada );
+        ShowData( tablaSeleccionada );
     }
+    
+    
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -81,20 +87,20 @@ public class ManejadorPostgre extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         label1 = new java.awt.Label();
-        choice1 = new java.awt.Choice();
+        choice1 = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Taller de Costura");
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
         jTable1.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -128,13 +134,13 @@ public class ManejadorPostgre extends javax.swing.JFrame {
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {},
+                {},
+                {},
+                {}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
         jTable2.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -146,7 +152,11 @@ public class ManejadorPostgre extends javax.swing.JFrame {
 
         label1.setText("Tabla:");
 
-        choice1.setName("comboBoxTablas"); // NOI18N
+        choice1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                choice1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -166,7 +176,7 @@ public class ManejadorPostgre extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(choice1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(choice1, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -179,7 +189,7 @@ public class ManejadorPostgre extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(label1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(choice1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
@@ -189,15 +199,13 @@ public class ManejadorPostgre extends javax.swing.JFrame {
                     .addComponent(jButton3)
                     .addComponent(jButton2)
                     .addComponent(jButton1))
-                .addContainerGap(230, Short.MAX_VALUE))
+                .addContainerGap(229, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                     .addContainerGap(153, Short.MAX_VALUE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(6, 6, 6)))
         );
-
-        choice1.getAccessibleContext().setAccessibleName("comboBoxTablas");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -225,6 +233,13 @@ public class ManejadorPostgre extends javax.swing.JFrame {
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         idRegistroSeleccionado = Integer.parseInt( jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString() );
     }//GEN-LAST:event_jTable2MouseClicked
+
+    private void choice1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_choice1ActionPerformed
+        if( choice1.getSelectedIndex() != -1 )  {
+            tablaSeleccionada = tablas.get( choice1.getSelectedIndex() );
+            ShowData( tablaSeleccionada );
+        }
+    }//GEN-LAST:event_choice1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -257,15 +272,13 @@ public class ManejadorPostgre extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ManejadorPostgre().setVisible(true);
-            }
+        java.awt.EventQueue.invokeLater(() -> {
+            new ManejadorPostgre().setVisible(true);
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private java.awt.Choice choice1;
+    private javax.swing.JComboBox<String> choice1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;

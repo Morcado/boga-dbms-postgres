@@ -15,7 +15,7 @@ import java.util.*;
  * @author LuisN
  */
 public class ConexionPostgre {
-    private String url = "jdbc:postgresql://localhost:5432/ControlUniversitario";
+    private String url = "jdbc:postgresql://localhost:5432/BD_BOGA";
     private String usuario = "postgres";
     private String contraseña = "postgres";
     private Connection tallerCostura ;
@@ -71,11 +71,11 @@ public class ConexionPostgre {
         
     }
     
-    public void DeleteDataFrom( String[] registro, Tabla tabla )    {
+    public void DeleteDataFrom( int idRegistro, Tabla tabla )    {
         
     }
     
-    public void ModifyRow( String[] regOriginal, String[] regNuevo, Tabla tabla )    {
+    public void ModifyRow( int idRegistro, String[] newInfo, Tabla tabla )    {
         
     }
 }

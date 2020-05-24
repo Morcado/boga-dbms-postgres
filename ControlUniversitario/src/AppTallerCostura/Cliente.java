@@ -13,7 +13,12 @@ public class Cliente extends Tabla {
     public Cliente()    {
         super("Cliente");
         this.columnas = new ArrayList<String>();
+        columnas.add("idCliente");
+        columnas.add("Nombre");
+        columnas.add("ApellidoPaterno");
+        columnas.add("ApellidoMaterno");
+        columnas.add("Telefono");
         
-        this.selectSQL = "SELECT * FROM Taller.cliente";
+        this.selectSQL = "SELECT * FROM Taller.Cliente";
     }
 }
