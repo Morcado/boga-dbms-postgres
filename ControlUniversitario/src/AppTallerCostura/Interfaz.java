@@ -47,7 +47,7 @@ public class Interfaz extends javax.swing.JFrame {
             jTable1.setModel( modeloRegistro );
             
             List<String[]> registros = tallerCostura.Registros( tabla );
-            registros.forEach(r -> modeloTabla.addRow( r ) );
+            registros.forEach( r -> modeloTabla.addRow( r ) );
             
             String[] registro = new String[tabla.Columnas().size()];
             modeloRegistro.addRow( registro );

@@ -232,8 +232,7 @@ BEGIN
     EXECUTE '
         UPDATE Taller.Confeccion AS tc
         SET tc.Anticipo = ttc.CostoTotal / 2 
-        FROM (Taller.Confeccion AS ttc
-        )
+        FROM (Taller.Confeccion AS ttc)
         WHERE tc.IdConfeccion = ttdc.IdConfeccion
     '
     USING NEW;
@@ -242,7 +241,8 @@ BEGIN
  
 END;
 $$ LANGUAGE plpgsql;
- 
+
+DROP TRIGGER anticipo_confeccion_insert ON Taller.Confeccion
 CREATE TRIGGER anticipo_confeccion_insert BEFORE INSERT ON Taller.Confeccion FOR EACH ROW EXECUTE PROCEDURE anticipo_confeccion_insert();
 
 --TRIGGER 6---
@@ -262,7 +262,8 @@ BEGIN
    
 END;
 $$ LANGUAGE plpgsql;
- 
+
+DROP TRIGGER subtotal_detallecompra_insert ON Taller.DetalleCompra
 CREATE TRIGGER subtotal_detallecompra_insert BEFORE INSERT ON Taller.DetalleCompra FOR EACH ROW EXECUTE PROCEDURE subtotal_detallecompra_insert();
 --Pruebas y valores de prueba.
 --Selects
@@ -276,6 +277,7 @@ SELECT * FROM Taller.Prenda
 SELECT * FROM Taller.Trabajo
 SELECT * FROM Taller.TipoTrabajo
 SELECT * FROM Taller.MaterialParaTrabajo
+SELECT * FROM Taller.Cliente
  
  
 --Inserción de valores de prueba.

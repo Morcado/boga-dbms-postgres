@@ -12,14 +12,21 @@ import java.util.*;
 public class Cliente extends Tabla {
     public Cliente()    {
         super("Cliente");
-        this.columnas = new ArrayList<String>();
-        columnas.add("idCliente");
-        columnas.add("Nombre");
-        columnas.add("ApellidoPaterno");
-        columnas.add("ApellidoMaterno");
-        columnas.add("Telefono");
+        this.columnasInsert = new ArrayList<>();
+        columnasInsert.add("Nombre");
+        columnasInsert.add("ApellidoPaterno");
+        columnasInsert.add("ApellidoMaterno");
+        columnasInsert.add("Telefono");
         
-        this.selectSQL = "SELECT * FROM Taller.Cliente";
-        InitializeQueryStrings();
+        this.columnasSelect = new ArrayList<>();
+        columnasSelect.add("idCliente");
+        columnasSelect.add("Nombre");
+        columnasSelect.add("ApellidoPaterno");
+        columnasSelect.add("ApellidoMaterno");
+        columnasSelect.add("Telefono");
+        
+        InitializeDeleteQuery();
+        InitializeInsertQuery();
+        InitializeUpdateQuery();
     }
 }
