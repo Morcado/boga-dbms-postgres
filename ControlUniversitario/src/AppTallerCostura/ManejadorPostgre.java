@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package controluniversitario;
+package AppTallerCostura;
 
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -12,6 +12,7 @@ import javax.swing.text.html.HTMLEditorKit.Parser;
 
 import java.io.Console;
 import java.sql.*;
+import java.util.*;  
 
 /**
  *
@@ -19,144 +20,48 @@ import java.sql.*;
  */
 public class ManejadorPostgre extends javax.swing.JFrame {
     
-    String url = "jdbc:postgresql://localhost:5432/ControlUniversitario";
-    String usuario = "postgres";
-    String contraseña = "postgres";
-    String selectedPK = "-1";
-    DefaultTableModel md;
-    // datos de la base de datos
-    String data[][] = {};
-    String cabeza[] = {"IdCarrera", "nombre"};
-    Connection connection;
+    private ConexionPostgre tallerCostura ;
+    private List<Tabla> tablas ;
+    private Tabla tablaSeleccionada ;
+    private int idRegistroSeleccionado ;
 
     public ManejadorPostgre() {
         initComponents();
-        md = new DefaultTableModel(data, cabeza);
-        jTable1.setModel(md);
-        Conexion();
+        tallerCostura = new ConexionPostgre();
+        tablas = new ArrayList<Tabla>();
+        tablas.add( new Cliente() );
         
-        
-        /*jTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
-            public void valueChanged(ListSelectionEvent event) {
-                // do some actions here, for example
-                // print first column value from selected setRowSorter(sorter);
-                jTextField1.setText(jTable1.getValueAt(jTable1.getSelectedRow(), 1).toString());
-                selectedPK = jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString();
-                System.out.println(selectedPK);
-                System.out.println(jTable1.getValueAt(jTable1.getSelectedRow(), 1).toString());
-            }
-        });*/
-
-        ShowData("Carrera");
-        
-    }
-
-    public void Conexion() {
-        try {
-            System.out.println("HOAL");
-            Class.forName("org.postgresql.Driver"); 
-            connection = DriverManager.getConnection(url, usuario, contraseña);
-        }
-        catch (Exception e) {
-            System.out.println("Error de conexion: " + e.getMessage());
-        }
+        tablas.forEach( c ->  choice1.add( c.Nombre() ) );
     }
     
-    public void ShowData(String tabla) {
+    public void ShowData(Tabla tabla) {
         try {
-            md = new DefaultTableModel(data, cabeza);
-            jTable1.setModel(md);
+            DefaultTableModel modeloTabla = tallerCostura.CreaModeloTabla( tabla );
+            jTable2.setModel( modeloTabla );
+            List<String[]> registros = tallerCostura.Registros( tabla );
             
-            java.sql.Statement statement = connection.createStatement();
-            String sql = "SELECT IdCarrera, Nombre FROM Datos." + tabla;            
-            ResultSet resultSet = statement.executeQuery(sql);
-                
-           
-            while (resultSet.next()) {
-                String idCarrera = resultSet.getString("idcarrera");
-                String nombre = resultSet.getString("nombre");
-                String datos[] = {idCarrera, nombre};
-
-                md.addRow(datos);
-            }
-            
-            resultSet.close();
-            statement.close();
-            
-            /*jTable1.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
-                public void valueChanged(ListSelectionEvent event) {
-                    // do some actions here, for example
-                    // print first column value from selected setRowSorter(sorter);
-                    jTextField1.setText(jTable1.getValueAt(jTable1.getSelectedRow(), 1).toString());
-                    selectedPK = jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString();
-                      
-                System.out.println(selectedPK);
-                System.out.println(jTable1.getValueAt(jTable1.getSelectedRow(), 1).toString());
-                }
-            });*/
-
+            registros.forEach((r) -> {
+                modeloTabla.addRow( r );
+            });
             System.out.println("Mostrar terminado");
         } catch (Exception e) {
             System.out.println("Error de mostrar: " + e.getMessage());
         }
     }
 
-    
-    public boolean InsertData() {
-        String statement = new String();
-
-        try {
-
-
-            java.sql.Statement sqlConnect = connection.createStatement();
-            sqlConnect.executeUpdate(statement);
-            sqlConnect.close();
-            
-            return true;
-
-        } catch (Exception e) {
-            //Esxception: handle exception
-            System.out.println("Errorrrrrr: " + e.getMessage());
-            return false;
-        }
+    public void InsertData( String[] registroInsertar, Tabla tabla ) {
+        tallerCostura.InsertDataTo( registroInsertar, tabla );
+        ShowData( tabla );
     }
 
-    public void DeleteData() {
-        String statement = new String();
-        if (selectedPK != "-1") {
-            try {
-                statement = "DELETE FROM Datos.Carrera WHERE IdCarrera=" + selectedPK;
-
-                java.sql.Statement sqlConnect = connection.createStatement();
-                sqlConnect.executeUpdate(statement);
-                sqlConnect.close();
-
-            } catch (Exception e) {
-                //Esxception: handle exception
-                System.out.println("Errorrrrrr: " + e.getMessage());
-            }
-        }
+    public void DeleteData( String[] registroEliminar, Tabla tabla ) {
+        tallerCostura.DeleteDataFrom( registroEliminar, tabla );
+        ShowData( tabla );
     }
 
-    public boolean ModifyData() {
-        String statement = new String();
-        if (selectedPK != "-1") {
-            try {
-                java.sql.Statement sqlConnect = connection.createStatement();
-    
-
-                sqlConnect.executeUpdate(statement);
-                sqlConnect.close();
-                
-                return true;
-    
-            } catch (Exception e) {
-                //Esxception: handle exception
-                System.out.println("Errorrrrrr: " + e.getMessage());
-                return false;
-            }
-        }
-        return false;
+    public void ModifyData( String[] regOriginal, String[] regNuevo, Tabla tabla ) {
+        tallerCostura.ModifyRow( regOriginal, regNuevo, tabla );
+        ShowData( tabla );
     }
     
     /**
@@ -241,6 +146,8 @@ public class ManejadorPostgre extends javax.swing.JFrame {
 
         label1.setText("Tabla:");
 
+        choice1.setName("comboBoxTablas"); // NOI18N
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -290,7 +197,7 @@ public class ManejadorPostgre extends javax.swing.JFrame {
                     .addGap(6, 6, 6)))
         );
 
-        choice1.getAccessibleContext().setAccessibleName("listTablas");
+        choice1.getAccessibleContext().setAccessibleName("comboBoxTablas");
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -298,26 +205,25 @@ public class ManejadorPostgre extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         InsertData();
-        ShowData("Carrera");
+        ShowData( tablaSeleccionada );
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         ModifyData();
-        ShowData("Carrera");
+        ShowData( tablaSeleccionada );
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         DeleteData();
-        ShowData("Carrera");
+        ShowData( tablaSeleccionada );
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked
-
-        selectedPK = jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString();
+        
     }//GEN-LAST:event_jTable1MouseClicked
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
-        // TODO add your handling code here:
+        idRegistroSeleccionado = Integer.parseInt( jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString() );
     }//GEN-LAST:event_jTable2MouseClicked
 
     /**

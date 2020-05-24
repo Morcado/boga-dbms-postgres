@@ -218,8 +218,11 @@
       </Properties>
     </Component>
     <Component class="java.awt.Choice" name="choice1">
+      <Properties>
+        <Property name="name" type="java.lang.String" value="comboBoxTablas" noResource="true"/>
+      </Properties>
       <AccessibilityProperties>
-        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="listTablas"/>
+        <Property name="AccessibleContext.accessibleName" type="java.lang.String" value="comboBoxTablas"/>
       </AccessibilityProperties>
     </Component>
   </SubComponents>
