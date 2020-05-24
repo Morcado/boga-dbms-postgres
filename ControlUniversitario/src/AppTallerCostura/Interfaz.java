@@ -26,13 +26,12 @@ public class Interfaz extends javax.swing.JFrame {
     private List<Tabla> tablas ;
     private Tabla tablaSeleccionada ;
     private int idRegistroSeleccionado ;
-
+    private List<String[]> registros;
 
     public Interfaz() {
         initComponents();
         tallerCostura = new ConexionPostgre();
         tablas = new ArrayList<>();
-        
         /*Agregar las tablas del modelo de la base de datos.*/
         tablas.add( new Cliente() );
         
@@ -46,7 +45,7 @@ public class Interfaz extends javax.swing.JFrame {
             DefaultTableModel modeloRegistro = tallerCostura.CreaModeloTabla( tabla );
             jTable1.setModel( modeloRegistro );
             
-            List<String[]> registros = tallerCostura.Registros( tabla );
+            registros = tallerCostura.Registros( tabla );
             registros.forEach( r -> modeloTabla.addRow( r ) );
             
             String[] registro = new String[tabla.Columnas().size()];

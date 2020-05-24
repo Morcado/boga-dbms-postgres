@@ -59,21 +59,25 @@ public class ConexionPostgre {
             
             resultSet.close();
             statement.close();
+            return registros ;
         }
         catch( SQLException e ) {
             System.out.println( e.getMessage() );
         }
         
-        return registros ;
+        return null;
     }
     
     public boolean InsertDataTo( String[] registro, Tabla tabla )  {
         //Insertar un registro en la tabla.
         try {
+            PreparedStatement statement = tallerCostura.prepareStatement(tabla.insertSQL);
 
-            String insert = "INSERT INTO Tabla.Cliente (Nombre, ApellidoPaterno, ApellidoMaterno, Telefono) VALUES (?, ?, ?, ?)";
-            //String statement = "INSERT INTO Datos.Carrera(nombre) VALUES ('" + nombre + "')";
-            PreparedStatement statement = tallerCostura.prepareStatement(insert);
+            // Checar si tiene llave primaria para insertar el primer elemento de registro registro[0]
+            statement.setString(1, registro[1]);
+            statement.setString(2, registro[2]);
+            statement.setString(3, registro[3]);
+            statement.setString(4, registro[4]);
             //java.sql.Statement sqlConnect = tallerCostura.createStatement();
             statement.executeUpdate();
             statement.close();

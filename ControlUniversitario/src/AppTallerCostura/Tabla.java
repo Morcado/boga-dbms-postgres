@@ -29,6 +29,10 @@ public class Tabla {
         this.nombre = nombre ;
     }
     
+    public void InitializeSelectQuery() {
+        selectSQL = "SELECT * FROM Taller." + nombre;
+    }
+    
     public void InitializeDeleteQuery() {
         String delete = "DELETE FROM Taller." + nombre ;
         

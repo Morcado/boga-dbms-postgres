@@ -28,5 +28,6 @@ public class Cliente extends Tabla {
         InitializeDeleteQuery();
         InitializeInsertQuery();
         InitializeUpdateQuery();
+        InitializeSelectQuery();
     }
 }
