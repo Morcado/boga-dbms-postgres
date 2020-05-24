@@ -15,8 +15,8 @@ public class AppTallerCostura {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        ManejadorPostgre carrera = new ManejadorPostgre();
-        carrera.setVisible(true);
+        Interfaz manejador = new Interfaz();
+        manejador.setVisible(true);
     }
     
 }

@@ -19,17 +19,17 @@ import java.awt.event.* ;
  *
  * @author Morcado
  */
-public class ManejadorPostgre extends javax.swing.JFrame {
+public class Interfaz extends javax.swing.JFrame {
     
     private ConexionPostgre tallerCostura ;
     private List<Tabla> tablas ;
     private Tabla tablaSeleccionada ;
     private int idRegistroSeleccionado ;
 
-    public ManejadorPostgre() {
+    public Interfaz() {
         initComponents();
         tallerCostura = new ConexionPostgre();
-        tablas = new ArrayList<Tabla>();
+        tablas = new ArrayList<>();
         
         /*Agregar las tablas del modelo de la base de datos.*/
         tablas.add( new Cliente() );
@@ -56,27 +56,34 @@ public class ManejadorPostgre extends javax.swing.JFrame {
         }
     }
 
-    public void InsertData() {
+    public void InsertRegister() {
         String[] registro = new String[tablaSeleccionada.Columnas().size()];
         
+        //Tomar los valores del grid de arriba y los mete en registro.
+        //Aunque toma en cuenta el id, dentro de insertar se ignora.
         
         tallerCostura.InsertDataTo( registro, tablaSeleccionada );
         ShowData( tablaSeleccionada );
     }
 
-    public void DeleteData() {     
+    public void DeleteRegister() {     
         tallerCostura.DeleteDataFrom( idRegistroSeleccionado, tablaSeleccionada );
         ShowData( tablaSeleccionada );
     }
 
-    public void ModifyData() {
+    public void ModifyRegister() {
         String[] newInfo = new String[tablaSeleccionada.Columnas().size()];
+        
+        //Tomar los valores de grid de arriba y los mete en newInfo.
         
         tallerCostura.ModifyRow( idRegistroSeleccionado, newInfo, tablaSeleccionada );
         ShowData( tablaSeleccionada );
     }
     
-    
+    public void ShowRegister()  {
+        //Muestra la información del registro seleccionado en el grid de arriba.
+        //Esta se edita para modificar el registro.
+    }
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -219,18 +226,17 @@ public class ManejadorPostgre extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        InsertData();
+        InsertRegister();
         ShowData( tablaSeleccionada );
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        ModifyData();
+        ModifyRegister();
         ShowData( tablaSeleccionada );
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        DeleteData();
+        DeleteRegister();
         ShowData( tablaSeleccionada );
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -241,6 +247,7 @@ public class ManejadorPostgre extends javax.swing.JFrame {
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         if( tablaSeleccionada != null ) {
             idRegistroSeleccionado = Integer.parseInt( jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString() );
+            ShowRegister();
         }
     }//GEN-LAST:event_jTable2MouseClicked
 
@@ -268,14 +275,18 @@ public class ManejadorPostgre extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ManejadorPostgre.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Interfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ManejadorPostgre.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Interfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ManejadorPostgre.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Interfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ManejadorPostgre.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Interfaz.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
@@ -283,7 +294,7 @@ public class ManejadorPostgre extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new ManejadorPostgre().setVisible(true);
+            new Interfaz().setVisible(true);
         });
     }
 

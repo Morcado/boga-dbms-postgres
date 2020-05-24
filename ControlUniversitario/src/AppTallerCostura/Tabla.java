@@ -21,6 +21,11 @@ public class Tabla {
         this.nombre = nombre ;
     }
     
+    public void InitializeQueryStrings()    {
+        //Inicializar las cadenas de update y delete para cada tabla.
+        //Este método se llama en el constructor de la tabla especifica.
+    }
+    
     public String Nombre()  {
         return nombre ;
     }

@@ -1,11 +1,11 @@
-CREATE DATABASE "BD_BOGA"
+﻿CREATE DATABASE "TallerCostura"
     WITH OWNER = postgres
         ENCODING = 'UTF8'
         TABLESPACE = pg_default
         LC_COLLATE = 'English_United States.1252'  -- Ubicaciones
         LC_CTYPE = 'English_United States.1252'
         CONNECTION LIMIT = -1; -- Limitar las conexiones
- 
+
 CREATE SCHEMA Taller
  
 CREATE TABLE Taller.TipoTrabajo (

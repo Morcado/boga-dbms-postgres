@@ -68,14 +68,15 @@ public class ConexionPostgre {
     }
     
     public void InsertDataTo( String[] registro, Tabla tabla )  {
-        
+        //Insertar un registro en la tabla.
+        //El primer valor del registro es el id, como es autonúmerico ignorar.
     }
     
     public void DeleteDataFrom( int idRegistro, Tabla tabla )    {
-        
+        //Eliminar un registro que tiene el id de la tabla.
     }
     
     public void ModifyRow( int idRegistro, String[] newInfo, Tabla tabla )    {
-        
+        //Modificar el registro con el id con los valores nuevos de la tabla.
     }
 }

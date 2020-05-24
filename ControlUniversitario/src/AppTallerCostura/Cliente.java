@@ -20,5 +20,6 @@ public class Cliente extends Tabla {
         columnas.add("Telefono");
         
         this.selectSQL = "SELECT * FROM Taller.Cliente";
+        InitializeQueryStrings();
     }
 }
