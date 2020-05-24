@@ -15,7 +15,7 @@ public class ControlUniversitario {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Carrera carrera = new Carrera();
+        ManejadorPostgre carrera = new ManejadorPostgre();
         carrera.setVisible(true);
     }
     
