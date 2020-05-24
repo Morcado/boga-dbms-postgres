@@ -48,8 +48,8 @@ public class ConexionPostgre {
             Statement statement = tallerCostura.createStatement();
             ResultSet resultSet = statement.executeQuery( tabla.selectSQL() );
             
-            String[] registro = new String[numCol];
             while( resultSet.next() ) {
+                String[] registro = new String[numCol];
                 for( int i = 0 ; i < columnas.size() ; ++i )  {
                     registro[i] = resultSet.getString( columnas.get( i ) );
                 }
