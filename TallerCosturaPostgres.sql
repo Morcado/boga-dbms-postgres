@@ -23,6 +23,8 @@ CREATE TABLE Taller.Cliente (
     Telefono VARCHAR( 50 ) NOT NULL,
     CONSTRAINT PK_CLIENTE PRIMARY KEY( IdCliente )
 )
+
+DROP  TABLE  Taller.Cliente cascade;
  
 CREATE TABLE Taller.Empleado (
     IdEmpleado BIGSERIAL NOT NULL,

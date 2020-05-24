@@ -5,6 +5,7 @@
  */
 package AppTallerCostura;
 
+import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
@@ -25,6 +26,7 @@ public class Interfaz extends javax.swing.JFrame {
     private List<Tabla> tablas ;
     private Tabla tablaSeleccionada ;
     private int idRegistroSeleccionado ;
+
 
     public Interfaz() {
         initComponents();
@@ -57,13 +59,26 @@ public class Interfaz extends javax.swing.JFrame {
     }
 
     public void InsertRegister() {
-        String[] registro = new String[tablaSeleccionada.Columnas().size()];
-        
+        int fila = jTable1.getSelectedRow();
+        int tam = tablaSeleccionada.Columnas().size();
+        String[] registro = new String[tam];
+
+        // Saltar el primero si tiene llave primaria
+        for (int i = 1; i < tam; i++) {
+            registro[i] = jTable1.getModel().getValueAt(fila, i).toString();
+        }
+
         //Tomar los valores del grid de arriba y los mete en registro.
         //Aunque toma en cuenta el id, dentro de insertar se ignora.
         
-        tallerCostura.InsertDataTo( registro, tablaSeleccionada );
-        ShowData( tablaSeleccionada );
+        boolean result = tallerCostura.InsertDataTo( registro, tablaSeleccionada );
+        if (result) {
+            JOptionPane.showMessageDialog(null, "Insercion correctabc");
+            ShowData( tablaSeleccionada );
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "Error al insertar.");
+        }
     }
 
     public void DeleteRegister() {     
@@ -227,17 +242,14 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         InsertRegister();
-        ShowData( tablaSeleccionada );
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         ModifyRegister();
-        ShowData( tablaSeleccionada );
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         DeleteRegister();
-        ShowData( tablaSeleccionada );
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jTable1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable1MouseClicked

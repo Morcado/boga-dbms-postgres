@@ -48,8 +48,8 @@ public class ConexionPostgre {
             Statement statement = tallerCostura.createStatement();
             ResultSet resultSet = statement.executeQuery( tabla.selectSQL() );
             
-            String[] registro = new String[numCol];
             while( resultSet.next() ) {
+                String[] registro = new String[numCol];
                 for( int i = 0 ; i < columnas.size() ; ++i )  {
                     registro[i] = resultSet.getString( columnas.get( i ) );
                 }
@@ -67,8 +67,24 @@ public class ConexionPostgre {
         return registros ;
     }
     
-    public void InsertDataTo( String[] registro, Tabla tabla )  {
+    public boolean InsertDataTo( String[] registro, Tabla tabla )  {
         //Insertar un registro en la tabla.
+        try {
+
+            String insert = "INSERT INTO Tabla.Cliente (Nombre, ApellidoPaterno, ApellidoMaterno, Telefono) VALUES (?, ?, ?, ?)";
+            //String statement = "INSERT INTO Datos.Carrera(nombre) VALUES ('" + nombre + "')";
+            PreparedStatement statement = tallerCostura.prepareStatement(insert);
+            //java.sql.Statement sqlConnect = tallerCostura.createStatement();
+            statement.executeUpdate();
+            statement.close();
+            
+            return true;
+
+        } catch (Exception e) {
+            //Esxception: handle exception
+            System.out.println("Errorrrrrr: " + e.getMessage());
+            return false;
+        }
         //El primer valor del registro es el id, como es autonúmerico ignorar.
     }
     
