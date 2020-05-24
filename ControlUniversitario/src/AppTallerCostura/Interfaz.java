@@ -58,13 +58,12 @@ public class Interfaz extends javax.swing.JFrame {
     }
 
     public void InsertRegister() {
-        int fila = jTable1.getSelectedRow();
         int tam = tablaSeleccionada.Columnas().size();
         String[] registro = new String[tam];
 
         // Saltar el primero si tiene llave primaria
         for (int i = 1; i < tam; i++) {
-            registro[i] = jTable1.getModel().getValueAt(fila, i).toString();
+            registro[i] = jTable1.getModel().getValueAt(0, i).toString();
         }
 
         //Tomar los valores del grid de arriba y los mete en registro.
@@ -95,6 +94,18 @@ public class Interfaz extends javax.swing.JFrame {
     }
     
     public void ShowRegister()  {
+        int tam = tablaSeleccionada.Columnas().size();
+        String[] registro = new String[tam];
+
+        // Saltar el primero si tiene llave primaria
+        for (int i = 1; i < tam; i++) {
+            registro[i] = jTable2.getModel().getValueAt(idRegistroSeleccionado, i).toString();
+        }
+        
+        for (int i = 1; i < tam; i++) {
+            jTable1.getModel().setValueAt(registro[i], 0, i);
+        }
+        
         //Muestra la información del registro seleccionado en el grid de arriba.
         //Esta se edita para modificar el registro.
     }
@@ -257,7 +268,7 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         if( tablaSeleccionada != null ) {
-            idRegistroSeleccionado = Integer.parseInt( jTable1.getValueAt(jTable1.getSelectedRow(), 0).toString() );
+            idRegistroSeleccionado = jTable2.getSelectedRow();
             ShowRegister();
         }
     }//GEN-LAST:event_jTable2MouseClicked

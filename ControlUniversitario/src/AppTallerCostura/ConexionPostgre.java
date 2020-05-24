@@ -74,10 +74,10 @@ public class ConexionPostgre {
             PreparedStatement statement = tallerCostura.prepareStatement(tabla.insertSQL);
 
             // Checar si tiene llave primaria para insertar el primer elemento de registro registro[0]
-            statement.setString(1, registro[1]);
-            statement.setString(2, registro[2]);
-            statement.setString(3, registro[3]);
-            statement.setString(4, registro[4]);
+            for (int i = 1; i < tabla.Columnas().size(); i++) {
+                statement.setString(i, registro[i]);
+                // setString siempre empieza en 1, si se modifica el ciclo para i = 0, adaptar setstring;
+            }
             //java.sql.Statement sqlConnect = tallerCostura.createStatement();
             statement.executeUpdate();
             statement.close();
