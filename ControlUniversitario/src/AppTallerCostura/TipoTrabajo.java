@@ -19,7 +19,6 @@ public class TipoTrabajo extends Tabla {
         columnasSelect.add("Costo");
         columnasSelect.add("Nombre");
                 
-        tipos.add(0);
         tipos.add(2);
         tipos.add(1);
         
