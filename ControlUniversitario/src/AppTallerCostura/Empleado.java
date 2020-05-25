@@ -7,8 +7,34 @@ package AppTallerCostura;
 
 /**
  *
- * @author Morcado
+ * @author luis
  */
-public class Empleado {
-    
+public class Empleado extends Tabla {
+    public Empleado() {
+        super("Empleado");
+        columnasInsert.add("Nombre");
+        columnasInsert.add("ApellidoPaterno");
+        columnasInsert.add("ApellidoMaterno");
+        columnasInsert.add("Telefono");
+        columnasInsert.add("Direccion");
+        
+        columnasSelect.add("IdEmpleado");
+        columnasSelect.add("Nombre");
+        columnasSelect.add("ApellidoPaterno");
+        columnasSelect.add("ApellidoMaterno");
+        columnasSelect.add("Telefono");
+        columnasSelect.add("Direccion");
+                
+        //0 = int, 1 = string, 2 = double o float, 3 = date
+        tipos.add(1);
+        tipos.add(1);
+        tipos.add(1);
+        tipos.add(1);
+        tipos.add(1);
+        
+        InitializeDeleteQuery();
+        InitializeInsertQuery();
+        InitializeUpdateQuery();
+        InitializeSelectQuery();
+    }
 }
