@@ -34,7 +34,8 @@ public class Interfaz extends javax.swing.JFrame {
         tablas = new ArrayList<>();
         /*Agregar las tablas del modelo de la base de datos.*/
         tablas.add( new Cliente() );
-        
+        tablas.add( new TipoTrabajo() );
+
         tablas.forEach( c ->  choice1.addItem( c.Nombre() ) );
     }
     

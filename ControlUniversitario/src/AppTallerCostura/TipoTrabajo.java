@@ -4,28 +4,23 @@
  * and open the template in the editor.
  */
 package AppTallerCostura;
-import java.util.*;  
+
 /**
  *
- * @author LuisN
+ * @author Morcado
  */
-public class Cliente extends Tabla {
-    public Cliente() {
-        super("Cliente");
+public class TipoTrabajo extends Tabla {
+    public TipoTrabajo() {
+        super("TipoTrabajo");
+        columnasInsert.add("Costo");
         columnasInsert.add("Nombre");
-        columnasInsert.add("ApellidoPaterno");
-        columnasInsert.add("ApellidoMaterno");
-        columnasInsert.add("Telefono");
         
-        columnasSelect.add("idCliente");
+        columnasSelect.add("idTipoTrabajo");
+        columnasSelect.add("Costo");
         columnasSelect.add("Nombre");
-        columnasSelect.add("ApellidoPaterno");
-        columnasSelect.add("ApellidoMaterno");
-        columnasSelect.add("Telefono");
-        
+                
         tipos.add(0);
-        tipos.add(1);
-        tipos.add(1);
+        tipos.add(2);
         tipos.add(1);
         
         InitializeDeleteQuery();

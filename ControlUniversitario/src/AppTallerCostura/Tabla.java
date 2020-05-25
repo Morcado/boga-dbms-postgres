@@ -20,6 +20,7 @@ public class Tabla {
     //columnInsert contiene las columnas de la tabla menos el id, para poder
     //insertar los datos y que el id se lo ponga la base de datos.
     protected ArrayList<String> columnasInsert ;
+    protected ArrayList<Integer> tipos; //0 = int, 1 = string, 2 = double o float, 3 = date
     protected String selectSQL ;
     protected String insertSQL ;
     protected String updateSQL ;
@@ -27,6 +28,7 @@ public class Tabla {
     
     public Tabla( String nombre )   {
         this.nombre = nombre ;
+        tipos = new ArrayList<>();
         columnasSelect = new ArrayList<>();
         columnasInsert = new ArrayList<>();
     }

@@ -76,7 +76,15 @@ public class ConexionPostgre {
 
             // Checar si tiene llave primaria para insertar el primer elemento de registro registro[0]
             for (int i = 1; i < tabla.Columnas().size()+1; i++) {
-                statement.setString(i, registro[i]);
+                if (tabla.tipos.get(i) == 0) { // es entero
+                    statement.setInt(i, Integer.parseInt(registro[i]));
+                }
+                else if (tabla.tipos.get(i) == 1){ // es cadena 
+                    statement.setString(i, registro[i]);
+                } 
+                else {
+                    statement.setDouble(i, Double.parseDouble(registro[i]));
+                }
                 // setString siempre empieza en 1, si se modifica el ciclo para i = 0, adaptar setstring;
             }
             //java.sql.Statement sqlConnect = tallerCostura.createStatement();
@@ -101,7 +109,7 @@ public class ConexionPostgre {
             statement.setInt(1, idRegistro);
 
             //java.sql.Statement sqlConnect = tallerCostura.createStatement();
-            statement.executeUpdate();
+            statement.execute();
             statement.close();
             
             return true;
@@ -119,7 +127,15 @@ public class ConexionPostgre {
             // Checar si tiene llave primaria para insertar el primer elemento de registro registro[0]
             int i = 1;
             for (; i < tabla.Columnas().size() + 1; i++) {
-                statement.setString(i, registroNuevo[i]);
+                if (tabla.tipos.get(i) == 0) { // es entero
+                    statement.setInt(i, Integer.parseInt(registroNuevo[i]));
+                }
+                else if (tabla.tipos.get(i) == 1){ // es cadena 
+                    statement.setString(i, registroNuevo[i]);
+                } 
+                else {
+                    statement.setDouble(i, Double.parseDouble(registroNuevo[i]));
+                }
                 // setString siempre empieza en 1, si se modifica el ciclo para i = 0, adaptar setstring;
             }
             statement.setInt(i, idRegistro);
