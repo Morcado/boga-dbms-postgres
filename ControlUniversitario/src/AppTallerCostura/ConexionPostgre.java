@@ -33,8 +33,9 @@ public class ConexionPostgre {
         DefaultTableModel modelo = new DefaultTableModel();
         
         tabla.ColumnasSelect().forEach((c) -> {
-            modelo.addColumn( c );
+            modelo.addColumn(c);
         });
+        
         
         return modelo ;
     }
@@ -50,7 +51,7 @@ public class ConexionPostgre {
             
             while( resultSet.next() ) {
                 String[] registro = new String[numCol];
-                for( int i = 0 ; i < columnas.size() ; ++i )  {
+                for( int i = 0 ; i < columnas.size() ; i++ )  {
                     registro[i] = resultSet.getString( columnas.get( i ) );
                 }
                 
@@ -74,7 +75,7 @@ public class ConexionPostgre {
             PreparedStatement statement = tallerCostura.prepareStatement(tabla.insertSQL);
 
             // Checar si tiene llave primaria para insertar el primer elemento de registro registro[0]
-            for (int i = 1; i < tabla.Columnas().size(); i++) {
+            for (int i = 1; i < tabla.Columnas().size()+1; i++) {
                 statement.setString(i, registro[i]);
                 // setString siempre empieza en 1, si se modifica el ciclo para i = 0, adaptar setstring;
             }
@@ -117,7 +118,7 @@ public class ConexionPostgre {
             PreparedStatement statement = tallerCostura.prepareStatement(tabla.updateSQL());
             // Checar si tiene llave primaria para insertar el primer elemento de registro registro[0]
             int i = 1;
-            for (; i < tabla.Columnas().size(); i++) {
+            for (; i < tabla.Columnas().size() + 1; i++) {
                 statement.setString(i, registroNuevo[i]);
                 // setString siempre empieza en 1, si se modifica el ciclo para i = 0, adaptar setstring;
             }

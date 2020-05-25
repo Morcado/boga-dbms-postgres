@@ -16,10 +16,10 @@ public class Tabla {
     //columnasSelect contiene las columnas que se leen con el select,
     //como en algunas tablas se pide información que solo se consigue con 
     //un join, entonces esas columnas agregadas están en columnSelect.
-    protected List<String> columnasSelect ;
+    protected ArrayList<String> columnasSelect ;
     //columnInsert contiene las columnas de la tabla menos el id, para poder
     //insertar los datos y que el id se lo ponga la base de datos.
-    protected List<String> columnasInsert ;
+    protected ArrayList<String> columnasInsert ;
     protected String selectSQL ;
     protected String insertSQL ;
     protected String updateSQL ;
@@ -27,6 +27,8 @@ public class Tabla {
     
     public Tabla( String nombre )   {
         this.nombre = nombre ;
+        columnasSelect = new ArrayList<>();
+        columnasInsert = new ArrayList<>();
     }
     
     public void InitializeSelectQuery() {

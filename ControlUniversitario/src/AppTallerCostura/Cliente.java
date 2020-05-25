@@ -10,16 +10,13 @@ import java.util.*;
  * @author LuisN
  */
 public class Cliente extends Tabla {
-    public Cliente()    {
+    public Cliente() {
         super("Cliente");
-        this.columnasInsert = new ArrayList<>();
-        columnasSelect.add("idCliente");
         columnasInsert.add("Nombre");
         columnasInsert.add("ApellidoPaterno");
         columnasInsert.add("ApellidoMaterno");
         columnasInsert.add("Telefono");
         
-        this.columnasSelect = new ArrayList<>();
         columnasSelect.add("idCliente");
         columnasSelect.add("Nombre");
         columnasSelect.add("ApellidoPaterno");

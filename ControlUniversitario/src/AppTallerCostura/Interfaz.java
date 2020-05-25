@@ -58,7 +58,7 @@ public class Interfaz extends javax.swing.JFrame {
     }
 
     public void InsertRegister() {
-        int tam = tablaSeleccionada.Columnas().size();
+        int tam = tablaSeleccionada.Columnas().size() + 1;
         String[] registro = new String[tam];
 
         // Saltar el primero si tiene llave primaria
@@ -91,7 +91,7 @@ public class Interfaz extends javax.swing.JFrame {
     public void ModifyRegister() {    
         //Tomar los valores de grid de arriba y los mete en newInfo.
 
-        int tam = tablaSeleccionada.Columnas().size();
+        int tam = tablaSeleccionada.Columnas().size() + 1;
         String[] registro = new String[tam];
 
         // Saltar el primero si tiene llave primaria
@@ -109,7 +109,7 @@ public class Interfaz extends javax.swing.JFrame {
     }
     
     public void ShowRegister(int fila)  {
-        int tam = tablaSeleccionada.Columnas().size();
+        int tam = tablaSeleccionada.Columnas().size() + 1;
         String[] registro = new String[tam];
 
         for (int i = 0; i < tam; i++) {
