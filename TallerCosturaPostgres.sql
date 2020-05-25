@@ -10,10 +10,13 @@ CREATE SCHEMA Taller
  
 CREATE TABLE Taller.TipoTrabajo (
     IdTipoTrabajo BIGSERIAL NOT NULL,
-    Costo FLOAT NOT NULL,
+    Costo NUMERIC(1000, 2) NOT NULL,
     Nombre VARCHAR( 100 ) NOT NULL,
     CONSTRAINT PK_TIPOTRABAJO PRIMARY KEY( IdTipoTrabajo )
 )
+
+DROP TABLE Taller.TipoTrabajo cascade
+
  
 CREATE TABLE Taller.Cliente (
     IdCliente BIGSERIAL NOT NULL,

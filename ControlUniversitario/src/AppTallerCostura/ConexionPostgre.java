@@ -86,8 +86,8 @@ public class ConexionPostgre {
                     statement.setString(i + 1, registro[i]);
                 } 
                 else {
-;
-                    statement.setDouble(i + 1, Math.round(Float.parseFloat(registro[i]) * Math.pow(10, 2)) / Math.pow(10, 2));
+;                   float num = (float) (Math.round(Float.parseFloat(registro[i]) * Math.pow(10, 2)) / Math.pow(10, 2));
+                    statement.setDouble(i + 1, num);
                 }
                 // setString siempre empieza en 1, si se modifica el ciclo para i = 0, adaptar setstring;
             }
