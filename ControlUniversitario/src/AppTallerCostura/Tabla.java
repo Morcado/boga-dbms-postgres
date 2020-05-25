@@ -89,8 +89,12 @@ public class Tabla {
         return nombre ;
     }
     
-    public List<String> Columnas()  {
+    public List<String> ColumnasSelect()    {
         return columnasSelect ;
+    }
+    
+    public List<String> Columnas()  {
+        return columnasInsert ;
     }
     
     public String selectSQL() {

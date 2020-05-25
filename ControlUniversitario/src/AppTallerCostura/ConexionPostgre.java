@@ -32,7 +32,7 @@ public class ConexionPostgre {
     public DefaultTableModel CreaModeloTabla( Tabla tabla ) {
         DefaultTableModel modelo = new DefaultTableModel();
         
-        tabla.Columnas().forEach((c) -> {
+        tabla.ColumnasSelect().forEach((c) -> {
             modelo.addColumn( c );
         });
         
@@ -41,7 +41,7 @@ public class ConexionPostgre {
     
     public List<String[]> Registros( Tabla tabla ) {
         List<String[]> registros = new ArrayList<>();
-        List<String> columnas = tabla.Columnas();
+        List<String> columnas = tabla.ColumnasSelect();
         int numCol = columnas.size();
         
         try {
