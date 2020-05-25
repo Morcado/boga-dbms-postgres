@@ -15,6 +15,7 @@ import java.io.Console;
 import java.sql.*;
 import java.util.*;  
 import java.awt.event.* ;
+import javax.swing.table.TableColumnModel;
 
 /**
  *
@@ -42,9 +43,13 @@ public class Interfaz extends javax.swing.JFrame {
     public void ShowData( Tabla tabla ) {
         try {
             DefaultTableModel modeloTabla = tallerCostura.CreaModeloTabla( tabla );
+            
             jTable2.setModel( modeloTabla );
             DefaultTableModel modeloRegistro = tallerCostura.CreaModeloTabla( tabla );
             jTable1.setModel( modeloRegistro );
+            
+            TableColumnModel tcm = jTable1.getColumnModel();
+            tcm.removeColumn(tcm.getColumn(0));
             
             registros = tallerCostura.Registros( tabla );
             registros.forEach( r -> modeloTabla.addRow( r ) );
@@ -59,12 +64,12 @@ public class Interfaz extends javax.swing.JFrame {
     }
 
     public void InsertRegister() {
-        int tam = tablaSeleccionada.Columnas().size() + 1;
+        int tam = tablaSeleccionada.Columnas().size();
         String[] registro = new String[tam];
 
         // Saltar el primero si tiene llave primaria
-        for (int i = 1; i < tam; i++) {
-            registro[i] = jTable1.getModel().getValueAt(0, i).toString();
+        for (int i = 0; i < tam; i++) {
+            registro[i] = jTable1.getModel().getValueAt(0, i + 1).toString();
         }
 
         //Tomar los valores del grid de arriba y los mete en registro.
@@ -92,12 +97,12 @@ public class Interfaz extends javax.swing.JFrame {
     public void ModifyRegister() {    
         //Tomar los valores de grid de arriba y los mete en newInfo.
 
-        int tam = tablaSeleccionada.Columnas().size() + 1;
+        int tam = tablaSeleccionada.Columnas().size();
         String[] registro = new String[tam];
 
         // Saltar el primero si tiene llave primaria
-        for (int i = 1; i < tam; i++) {
-            registro[i] = jTable1.getModel().getValueAt(0, i).toString();
+        for (int i = 0; i < tam; i++) {
+            registro[i] = jTable1.getModel().getValueAt(0, i+1).toString();
         }
         
         boolean result = tallerCostura.ModifyRow( idRegistroSeleccionado, registro, tablaSeleccionada );

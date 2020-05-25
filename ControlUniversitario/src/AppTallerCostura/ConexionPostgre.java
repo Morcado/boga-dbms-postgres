@@ -75,15 +75,15 @@ public class ConexionPostgre {
             PreparedStatement statement = tallerCostura.prepareStatement(tabla.insertSQL);
 
             // Checar si tiene llave primaria para insertar el primer elemento de registro registro[0]
-            for (int i = 1; i < tabla.Columnas().size()+1; i++) {
+            for (int i = 0; i < tabla.Columnas().size(); i++) {
                 if (tabla.tipos.get(i) == 0) { // es entero
-                    statement.setInt(i, Integer.parseInt(registro[i]));
+                    statement.setInt(i + 1, Integer.parseInt(registro[i]));
                 }
                 else if (tabla.tipos.get(i) == 1){ // es cadena 
-                    statement.setString(i, registro[i]);
+                    statement.setString(i + 1, registro[i]);
                 } 
                 else {
-                    statement.setDouble(i, Double.parseDouble(registro[i]));
+                    statement.setDouble(i + 1, Double.parseDouble(registro[i]));
                 }
                 // setString siempre empieza en 1, si se modifica el ciclo para i = 0, adaptar setstring;
             }
@@ -125,20 +125,20 @@ public class ConexionPostgre {
         try {
             PreparedStatement statement = tallerCostura.prepareStatement(tabla.updateSQL());
             // Checar si tiene llave primaria para insertar el primer elemento de registro registro[0]
-            int i = 1;
-            for (; i < tabla.Columnas().size() + 1; i++) {
+            int i = 0;
+            for (; i < tabla.Columnas().size(); i++) {
                 if (tabla.tipos.get(i) == 0) { // es entero
-                    statement.setInt(i, Integer.parseInt(registroNuevo[i]));
+                    statement.setInt(i + 1, Integer.parseInt(registroNuevo[i]));
                 }
                 else if (tabla.tipos.get(i) == 1){ // es cadena 
-                    statement.setString(i, registroNuevo[i]);
+                    statement.setString(i + 1, registroNuevo[i]);
                 } 
                 else {
-                    statement.setDouble(i, Double.parseDouble(registroNuevo[i]));
+                    statement.setDouble(i + 1, Double.parseDouble(registroNuevo[i]));
                 }
                 // setString siempre empieza en 1, si se modifica el ciclo para i = 0, adaptar setstring;
             }
-            statement.setInt(i, idRegistro);
+            statement.setInt(i + 1, idRegistro);
 
             //java.sql.Statement sqlConnect = tallerCostura.createStatement();
             statement.executeUpdate();

@@ -23,7 +23,7 @@ public class Cliente extends Tabla {
         columnasSelect.add("ApellidoMaterno");
         columnasSelect.add("Telefono");
         
-        tipos.add(0);
+        tipos.add(1);
         tipos.add(1);
         tipos.add(1);
         tipos.add(1);
