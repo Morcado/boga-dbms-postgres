@@ -92,8 +92,24 @@ public class ConexionPostgre {
         //El primer valor del registro es el id, como es autonúmerico ignorar.
     }
     
-    public void DeleteDataFrom( int idRegistro, Tabla tabla )    {
+    public boolean DeleteDataFrom( int idRegistro, Tabla tabla )    {
         //Eliminar un registro que tiene el id de la tabla.
+        try {
+            PreparedStatement statement = tallerCostura.prepareStatement(tabla.deleteSQL());
+            // Checar si tiene llave primaria para insertar el primer elemento de registro registro[0]
+            statement.setInt(1, idRegistro);
+
+            //java.sql.Statement sqlConnect = tallerCostura.createStatement();
+            statement.executeUpdate();
+            statement.close();
+            
+            return true;
+
+        } catch (Exception e) {
+            //Esxception: handle exception
+            System.out.println("Errorrrrrr: " + e.getMessage());
+            return false;
+        }
     }
     
     public boolean ModifyRow( int idRegistro, String[] registroNuevo, Tabla tabla )    {

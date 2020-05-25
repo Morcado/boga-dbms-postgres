@@ -74,13 +74,18 @@ public class Interfaz extends javax.swing.JFrame {
             ShowData( tablaSeleccionada );
         }
         else {
-            JOptionPane.showMessageDialog(null, "Error al insertar.");
+            JOptionPane.showMessageDialog(null, "Error al insertar, asegurate de que todos los campos sean azules.");
         }
     }
 
     public void DeleteRegister() {     
-        tallerCostura.DeleteDataFrom( idRegistroSeleccionado, tablaSeleccionada );
-        ShowData( tablaSeleccionada );
+        boolean result = tallerCostura.DeleteDataFrom( idRegistroSeleccionado, tablaSeleccionada );
+        if (result) {
+            ShowData( tablaSeleccionada );
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "Error al borrar.");
+        }
     }
 
     public void ModifyRegister() {    
