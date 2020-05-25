@@ -96,7 +96,27 @@ public class ConexionPostgre {
         //Eliminar un registro que tiene el id de la tabla.
     }
     
-    public void ModifyRow( int idRegistro, String[] newInfo, Tabla tabla )    {
-        //Modificar el registro con el id con los valores nuevos de la tabla.
+    public boolean ModifyRow( int idRegistro, String[] registroNuevo, Tabla tabla )    {
+        try {
+            PreparedStatement statement = tallerCostura.prepareStatement(tabla.updateSQL());
+            // Checar si tiene llave primaria para insertar el primer elemento de registro registro[0]
+            int i = 1;
+            for (; i < tabla.Columnas().size(); i++) {
+                statement.setString(i, registroNuevo[i]);
+                // setString siempre empieza en 1, si se modifica el ciclo para i = 0, adaptar setstring;
+            }
+            statement.setInt(i, idRegistro);
+
+            //java.sql.Statement sqlConnect = tallerCostura.createStatement();
+            statement.executeUpdate();
+            statement.close();
+            
+            return true;
+
+        } catch (Exception e) {
+            //Esxception: handle exception
+            System.out.println("Errorrrrrr: " + e.getMessage());
+            return false;
+        }
     }
 }
