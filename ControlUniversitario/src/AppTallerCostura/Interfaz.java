@@ -71,43 +71,57 @@ public class Interfaz extends javax.swing.JFrame {
         
         boolean result = tallerCostura.InsertDataTo( registro, tablaSeleccionada );
         if (result) {
-            JOptionPane.showMessageDialog(null, "Insercion correctabc");
             ShowData( tablaSeleccionada );
         }
         else {
-            JOptionPane.showMessageDialog(null, "Error al insertar.");
+            JOptionPane.showMessageDialog(null, "Error al insertar, asegurate de que todos los campos sean azules.");
         }
     }
 
     public void DeleteRegister() {     
-        tallerCostura.DeleteDataFrom( idRegistroSeleccionado, tablaSeleccionada );
-        ShowData( tablaSeleccionada );
+        boolean result = tallerCostura.DeleteDataFrom( idRegistroSeleccionado, tablaSeleccionada );
+        if (result) {
+            ShowData( tablaSeleccionada );
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "Error al borrar.");
+        }
     }
 
-    public void ModifyRegister() {
-        String[] newInfo = new String[tablaSeleccionada.Columnas().size()];
-        
+    public void ModifyRegister() {    
         //Tomar los valores de grid de arriba y los mete en newInfo.
-        
-        tallerCostura.ModifyRow( idRegistroSeleccionado, newInfo, tablaSeleccionada );
-        ShowData( tablaSeleccionada );
-    }
-    
-    public void ShowRegister()  {
+
         int tam = tablaSeleccionada.Columnas().size();
         String[] registro = new String[tam];
 
         // Saltar el primero si tiene llave primaria
         for (int i = 1; i < tam; i++) {
-            registro[i] = jTable2.getModel().getValueAt(idRegistroSeleccionado, i).toString();
+            registro[i] = jTable1.getModel().getValueAt(0, i).toString();
         }
         
-        for (int i = 1; i < tam; i++) {
+        boolean result = tallerCostura.ModifyRow( idRegistroSeleccionado, registro, tablaSeleccionada );
+        if (result) {
+            ShowData( tablaSeleccionada );
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "Error al modificar.");
+        }
+    }
+    
+    public void ShowRegister(int fila)  {
+        int tam = tablaSeleccionada.Columnas().size();
+        String[] registro = new String[tam];
+
+        for (int i = 0; i < tam; i++) {
+            registro[i] = jTable2.getModel().getValueAt(fila, i).toString();
+        }
+        
+        for (int i = 0; i < tam; i++) {
             jTable1.getModel().setValueAt(registro[i], 0, i);
         }
         
         //Muestra la información del registro seleccionado en el grid de arriba.
-        //Esta se edita para modificar el registro.
+
     }
     
     /**
@@ -268,8 +282,8 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void jTable2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTable2MouseClicked
         if( tablaSeleccionada != null ) {
-            idRegistroSeleccionado = jTable2.getSelectedRow();
-            ShowRegister();
+            idRegistroSeleccionado = Integer.parseInt(jTable2.getModel().getValueAt(jTable2.getSelectedRow(), 0).toString());
+            ShowRegister(jTable2.getSelectedRow());
         }
     }//GEN-LAST:event_jTable2MouseClicked
 
