@@ -28,7 +28,7 @@ public class Prenda extends Tabla {
         tipos.add(0);
         tipos.add(2);
         tipos.add(2);
-        tipos.add(1);
+        tipos.add(4);
         
         InitializeDeleteQuery();
         InitializeInsertQuery();

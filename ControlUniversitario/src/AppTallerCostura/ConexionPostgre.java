@@ -64,7 +64,9 @@ public class ConexionPostgre {
             while( resultSet.next() ) {
                 String[] registro = new String[numCol];
                 for( int i = 0 ; i < columnas.size() ; i++ )  {
-                    registro[i] = resultSet.getString( columnas.get( i ) );
+                    String valor = resultSet.getString( columnas.get( i ) );
+                    
+                    registro[i] = valor.equals("f") ? "NO" : valor.equals("t") ? "SI" : valor ;
                 }
                 
                 registros.add( registro );
@@ -84,7 +86,7 @@ public class ConexionPostgre {
     public boolean InsertDataTo( String[] registro, Tabla tabla )  {
         //Insertar un registro en la tabla.
         try {
-            PreparedStatement statement = tallerCostura.prepareStatement(tabla.insertSQL);
+            PreparedStatement statement = tallerCostura.prepareStatement( tabla.insertSQL );
 
             // Checar si tiene llave primaria para insertar el primer elemento de registro registro[0]
             for (int i = 0; i < tabla.Columnas().size(); i++) {
@@ -99,7 +101,7 @@ public class ConexionPostgre {
                     statement.setDouble(i + 1, num);
                 }
                 else if( tabla.tipos.get( i ) == 4 )    {   //booleano
-                    //TODO
+                        statement.setBoolean( i + 1, registro[i].equals("SI") ? true : registro[i].equals("NO") ? false : null );
                 }
                 // setString siempre empieza en 1, si se modifica el ciclo para i = 0, adaptar setstring;
             }
