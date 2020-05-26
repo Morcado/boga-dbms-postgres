@@ -37,19 +37,19 @@ public class Interfaz extends javax.swing.JFrame {
         tablas.add( new Cliente() );
         tablas.add( new TipoTrabajo() );
         tablas.add( new Empleado() );
+        tablas.add( new Prenda() );
         tablas.forEach( c ->  choice1.addItem( c.Nombre() ) );
     }
     
     public void ShowData( Tabla tabla ) {
         try {
+            //Grid de abajo.
             DefaultTableModel modeloTabla = tallerCostura.CreaModeloTabla( tabla );
-            
             jTable2.setModel( modeloTabla );
-            DefaultTableModel modeloRegistro = tallerCostura.CreaModeloTabla( tabla );
-            jTable1.setModel( modeloRegistro );
             
-            TableColumnModel tcm = jTable1.getColumnModel();
-            tcm.removeColumn(tcm.getColumn(0));
+            //Grid de arriba
+            DefaultTableModel modeloRegistro = tallerCostura.CreaModeloQuery( tabla );
+            jTable1.setModel( modeloRegistro );
             
             registros = tallerCostura.Registros( tabla );
             registros.forEach( r -> modeloTabla.addRow( r ) );
@@ -69,7 +69,7 @@ public class Interfaz extends javax.swing.JFrame {
 
         // Saltar el primero si tiene llave primaria
         for (int i = 0; i < tam; i++) {
-            registro[i] = jTable1.getModel().getValueAt(0, i + 1).toString();
+            registro[i] = jTable1.getModel().getValueAt(0, i).toString();
         }
 
         //Tomar los valores del grid de arriba y los mete en registro.
@@ -102,7 +102,7 @@ public class Interfaz extends javax.swing.JFrame {
 
         // Saltar el primero si tiene llave primaria
         for (int i = 0; i < tam; i++) {
-            registro[i] = jTable1.getModel().getValueAt(0, i+1).toString();
+            registro[i] = jTable1.getModel().getValueAt(0, i).toString();
         }
         
         boolean result = tallerCostura.ModifyRow( idRegistroSeleccionado, registro, tablaSeleccionada );
