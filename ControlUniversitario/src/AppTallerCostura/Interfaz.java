@@ -115,15 +115,17 @@ public class Interfaz extends javax.swing.JFrame {
     }
     
     public void ShowRegister(int fila)  {
-        int tam = tablaSeleccionada.Columnas().size() + 1;
-        String[] registro = new String[tam];
+        List<String> registro = new ArrayList<>();
 
-        for (int i = 0; i < tam; i++) {
-            registro[i] = jTable2.getModel().getValueAt(fila, i).toString();
+        for( int i = 0; i < jTable2.getModel().getColumnCount() ; i++ ) {
+            String nombreCol = jTable2.getColumnName( i );
+            
+            if( tablaSeleccionada.Columnas().contains( nombreCol ) )
+                registro.add( jTable2.getModel().getValueAt(fila, i).toString() );
         }
         
-        for (int i = 0; i < tam; i++) {
-            jTable1.getModel().setValueAt(registro[i], 0, i);
+        for (int i = 0; i < jTable1.getModel().getColumnCount() ; i++) {
+            jTable1.getModel().setValueAt(registro.get(i), 0, i);
         }
         
         //Muestra la información del registro seleccionado en el grid de arriba.
