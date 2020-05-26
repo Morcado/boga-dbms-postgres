@@ -39,6 +39,15 @@ public class ConexionPostgre {
             modelo.addColumn(c);
         });
         
+        return modelo ;
+    }
+    
+    public DefaultTableModel CreaModeloQuery( Tabla tabla ) {
+        DefaultTableModel modelo = new DefaultTableModel();
+        
+        tabla.Columnas().forEach((c) -> {
+            modelo.addColumn(c);
+        });
         
         return modelo ;
     }
@@ -85,9 +94,12 @@ public class ConexionPostgre {
                 else if (tabla.tipos.get(i) == 1){ // es cadena 
                     statement.setString(i + 1, registro[i]);
                 } 
-                else {
+                else if( tabla.tipos.get(i) == 2 ){  //flotante
 ;                   float num = (float) (Math.round(Float.parseFloat(registro[i]) * Math.pow(10, 2)) / Math.pow(10, 2));
                     statement.setDouble(i + 1, num);
+                }
+                else if( tabla.tipos.get( i ) == 4 )    {   //booleano
+                    //TODO
                 }
                 // setString siempre empieza en 1, si se modifica el ciclo para i = 0, adaptar setstring;
             }
