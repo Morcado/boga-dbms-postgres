@@ -1,4 +1,6 @@
-
-ControlUniversitario/nbproject/private/private.properties
-ControlUniversitario/nbproject/private/private.xml
-/ControlUniversitario/dist/
+ControlUniversitario/build
+ControlUniversitario/nbproject
+ControlUniversitario/build.xml
+ControlUniversitario/manifest.mf
+external-lib
+*.sql
