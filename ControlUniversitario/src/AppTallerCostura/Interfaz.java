@@ -10,7 +10,11 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.html.HTMLEditorKit.Parser;
-
+import javax.swing.RowSorter;
+import javax.swing.SortOrder;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import javax.swing.table.TableRowSorter;
 import java.io.Console;
 import java.sql.*;
 import java.util.*;  
@@ -38,6 +42,7 @@ public class Interfaz extends javax.swing.JFrame {
         tablas.add( new TipoTrabajo() );
         tablas.add( new Empleado() );
         tablas.add( new Prenda() );
+        tablas.add( new Trabajo () );
         tablas.forEach( c ->  choice1.addItem( c.Nombre() ) );
     }
     
