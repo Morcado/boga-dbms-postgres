@@ -151,8 +151,11 @@ public class ConexionPostgre {
                 else if (tabla.tipos.get(i) == 1){ // es cadena 
                     statement.setString(i + 1, registroNuevo[i]);
                 } 
-                else {
+                else if( tabla.tipos.get(i) == 2 )    { //double
                     statement.setDouble(i + 1, Double.parseDouble(registroNuevo[i]));
+                }
+                else if( tabla.tipos.get( i ) == 4 )    {   //booleano
+                        statement.setBoolean( i + 1, registroNuevo[i].equals("SI") ? true : registroNuevo[i].equals("NO") ? false : null );
                 }
                 // setString siempre empieza en 1, si se modifica el ciclo para i = 0, adaptar setstring;
             }
