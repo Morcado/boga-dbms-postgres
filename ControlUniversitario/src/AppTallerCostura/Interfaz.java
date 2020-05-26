@@ -41,6 +41,7 @@ public class Interfaz extends javax.swing.JFrame {
         tablas.add( new Cliente() );
         tablas.add( new TipoTrabajo() );
         tablas.add( new Empleado() );
+        tablas.add( new Confeccion() );
         tablas.add( new Prenda() );
         tablas.add( new Trabajo () );
         tablas.add( new Material() );
@@ -76,6 +77,9 @@ public class Interfaz extends javax.swing.JFrame {
 
         // Saltar el primero si tiene llave primaria
         for (int i = 0; i < tam; i++) {
+            if( jTable1.getColumnName(i).equals("FechaPedido") )
+                continue ;
+            
             registro[i] = jTable1.getModel().getValueAt(0, i).toString();
         }
 
@@ -109,6 +113,9 @@ public class Interfaz extends javax.swing.JFrame {
 
         // Saltar el primero si tiene llave primaria
         for (int i = 0; i < tam; i++) {
+            if( jTable1.getColumnName(i).equals("FechaPedido") )
+                continue ;
+            
             registro[i] = jTable1.getModel().getValueAt(0, i).toString();
         }
         

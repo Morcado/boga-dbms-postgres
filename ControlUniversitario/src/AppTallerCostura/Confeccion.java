@@ -25,9 +25,9 @@ public class Confeccion extends Tabla {
         columnasSelect.add("Anticipo");
         columnasSelect.add("IdCliente");
                 
-        //0 = int, 1 = string, 2 = double o float, 3 = date
+        //0 = int, 1 = string, 2 = double o float, 3 = date, 4 = bool, 5 = fecha actual
         tipos.add(2);
-        tipos.add(3);
+        tipos.add(5);
         tipos.add(3);
         tipos.add(2);
         tipos.add(0);

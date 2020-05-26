@@ -66,6 +66,11 @@ public class ConexionPostgre {
                 for( int i = 0 ; i < columnas.size() ; i++ )  {
                     String valor = resultSet.getString( columnas.get( i ) );
                     
+                    if( valor == null ) {
+                        registro[i] = " ";
+                        continue ;
+                    }
+                        
                     registro[i] = valor.equals("f") ? "NO" : valor.equals("t") ? "SI" : valor ;
                 }
                 
@@ -100,8 +105,14 @@ public class ConexionPostgre {
 ;                   float num = (float) (Math.round(Float.parseFloat(registro[i]) * Math.pow(10, 2)) / Math.pow(10, 2));
                     statement.setDouble(i + 1, num);
                 }
+                else if( tabla.tipos.get(i) == 3 )  { //fecha
+                    statement.setDate( i + 1, java.sql.Date.valueOf( registro[i] ) );
+                }
                 else if( tabla.tipos.get( i ) == 4 )    {   //booleano
                         statement.setBoolean( i + 1, registro[i].equals("SI") ? true : registro[i].equals("NO") ? false : null );
+                }
+                else if( tabla.tipos.get(i) == 5 )  { //fecha actual
+                    statement.setTimestamp( i + 1, java.sql.Timestamp.valueOf( java.time.LocalDateTime.now() ) );
                 }
                 // setString siempre empieza en 1, si se modifica el ciclo para i = 0, adaptar setstring;
             }
@@ -154,8 +165,14 @@ public class ConexionPostgre {
                 else if( tabla.tipos.get(i) == 2 )    { //double
                     statement.setDouble(i + 1, Double.parseDouble(registroNuevo[i]));
                 }
+                else if( tabla.tipos.get(i) == 3 )  { //fecha
+                    statement.setDate( i + 1, java.sql.Date.valueOf( registroNuevo[i] ) );
+                }
                 else if( tabla.tipos.get( i ) == 4 )    {   //booleano
                         statement.setBoolean( i + 1, registroNuevo[i].equals("SI") ? true : registroNuevo[i].equals("NO") ? false : null );
+                }
+                else if( tabla.tipos.get(i) == 5 )  { //fecha actual
+                    statement.setDate( i + 1, java.sql.Date.valueOf( java.time.LocalDate.now() ) );
                 }
                 // setString siempre empieza en 1, si se modifica el ciclo para i = 0, adaptar setstring;
             }
