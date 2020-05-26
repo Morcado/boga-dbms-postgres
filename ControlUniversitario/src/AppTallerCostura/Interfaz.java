@@ -44,6 +44,7 @@ public class Interfaz extends javax.swing.JFrame {
         tablas.add( new Prenda() );
         tablas.add( new Trabajo () );
         tablas.add( new Material() );
+        tablas.add( new MaterialParaTrabajo() );
         tablas.forEach( c ->  choice1.addItem( c.Nombre() ) );
     }
     
