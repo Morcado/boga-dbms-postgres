@@ -34,6 +34,10 @@ public class DetalleCompra extends Tabla {
         columnasSelect.add("Cantidad");
         columnasSelect.add("Subtotal");
         
+        InitializeDeleteQuery();
+        InitializeInsertQuery();
+        InitializeUpdateQuery();
+        
         selectSQL = "SELECT IdDetalleCompra, d.IdCompra, c.FechaCompra, d.IdMaterial, m.Descripcion, CostoUnitario, Cantidad, Subtotal FROM Taller.DetalleCompra AS d " +
 "INNER JOIN Taller.Material AS m ON d.IdMaterial = m.IdMaterial " +
 "INNER JOIN Taller.Compra AS c ON d.IdCompra = c.IdCompra";
