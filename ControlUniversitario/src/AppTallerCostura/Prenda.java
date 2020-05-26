@@ -24,22 +24,20 @@ public class Prenda extends Tabla {
         columnasSelect.add("CostoMaterial");
         columnasSelect.add("Finalizado");
                 
-        //0 = int, 1 = string, 2 = double o float, 3 = date, 4 = boolean
+        //0 = int, 1 = string, 2 = double o float, 3 = date
         tipos.add(0);
         tipos.add(2);
         tipos.add(2);
-        tipos.add(1);
+        tipos.add(0);
         
         InitializeDeleteQuery();
         InitializeInsertQuery();
         InitializeUpdateQuery();
         
-        selectSQL = "SELECT p.IdPrenda, " +
-        "p.IdConfeccion, " +
-        "CONCAT( cl.Nombre,' ',cl.ApellidoPaterno,' ',cl.ApellidoMaterno,' ',TO_CHAR( c.FechaPedido,'HH12:MI:SS') ) AS InfoConfeccion, " +
-        "CostoTrabajo, CostoMaterial, Finalizado " +
-        "FROM Taller.Prenda AS p " +  
-        "INNER JOIN Taller.Confeccion AS c ON p.IdConfeccion = c.IdConfeccion " +
+        selectSQL = "SELECT p.IdPrenda, p.IdConfeccion, CONCAT( cl.Nombre,' ',cl.ApellidoPaterno,' ',cl.ApellidoMaterno,' ',TO_CHAR( c.FechaPedido,'HH12:MI:SS') ) AS InfoConfeccion,"+
+        "CostoTrabajo, CostoMaterial, Finalizado"+
+        "FROM Taller.Prenda AS p "+
+        "INNER JOIN Taller.Confeccion AS c ON p.IdConfeccion = c.IdConfeccion"+
         "INNER JOIN Taller.Cliente AS cl ON c.IdCliente = cl.IdCliente" ;
     }
 }
