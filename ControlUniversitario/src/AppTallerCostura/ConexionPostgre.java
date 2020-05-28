@@ -61,7 +61,7 @@ public class ConexionPostgre {
             Statement statement = tallerCostura.createStatement();
             ResultSet resultSet = statement.executeQuery( "SELECT IdDetalleCompra, d.IdCompra, c.FechaCompra, d.IdMaterial, m.Descripcion, CostoUnitario, Cantidad, Subtotal FROM Taller.DetalleCompra AS d " +
 "INNER JOIN Taller.Material AS m ON d.IdMaterial = m.IdMaterial " +
-"INNER JOIN Taller.Compra AS c ON d.IdCompra = c.IdCompra" + " WHERE " + tabla.columnasSelect.get(0) +"="+ id );
+"INNER JOIN Taller.Compra AS c ON d.IdCompra = c.IdCompra" + " WHERE d." + tabla.columnasSelect.get(1) +"="+ id );
             
             while( resultSet.next() ) {
                 String[] registro = new String[numCol];
