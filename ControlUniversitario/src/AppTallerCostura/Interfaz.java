@@ -100,7 +100,12 @@ public class Interfaz extends javax.swing.JFrame {
             ShowData( tablaSeleccionada );
         }
         else {
-            JOptionPane.showMessageDialog(null, "Error al insertar, asegurate de que todos los campos sean azules.");
+            if (tablaSeleccionada.nombre == "MaterialParaTrabajo") {
+                JOptionPane.showMessageDialog(null, "Error al insertar: no hay suficiente material");
+            }
+            else {
+                JOptionPane.showMessageDialog(null, "Error al insertar");
+            }
         }
     }
 
@@ -325,7 +330,16 @@ public class Interfaz extends javax.swing.JFrame {
         if( tablaSeleccionada != null ) {
             idRegistroSeleccionado = Integer.parseInt(jTable2.getModel().getValueAt(jTable2.getSelectedRow(), 0).toString());
             ShowRegister(jTable2.getSelectedRow());
-
+               if (tablaSeleccionada.nombre == "Compra") {
+                   registros = tallerCostura.RegistrosId(tablas.get(9), idRegistroSeleccionado);
+                   if (registros.isEmpty())
+                       jButton3.setEnabled(true); 
+                   else 
+                       jButton3.setEnabled(false);
+               }
+               else {
+                   jButton3.setEnabled(true); 
+               }
         }
     }//GEN-LAST:event_jTable2MouseClicked
 
@@ -335,6 +349,7 @@ public class Interfaz extends javax.swing.JFrame {
             ShowData( tablaSeleccionada );
             if (tablaSeleccionada.nombre == "Compra") {
                 jButton4.setVisible(true);
+                jButton3.setEnabled(false);
             }else{
                 jButton4.setVisible(false);
             }
@@ -342,15 +357,9 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_choice1ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        final JDialog frame = new JDialog();
+        JDialog frame = new JDialog();
         JTable jTable3 = new JTable();
-       
-        
-        /*DefaultTableModel modelo = new DefaultTableModel();
-        
-        tablas.get(9).Columnas().forEach((c) -> {
-            modelo.addColumn(c);
-        });*/
+
         DefaultTableModel modelo = tallerCostura.CreaModeloTabla( tablas.get(9) );
         jTable3.setModel( modelo );
 

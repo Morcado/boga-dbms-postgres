@@ -130,6 +130,16 @@ public class ConexionPostgre {
         try {
             PreparedStatement statement = tallerCostura.prepareStatement( tabla.insertSQL );
 
+            if (tabla.nombre == "MaterialParaTrabajo") {
+                Statement st = tallerCostura.createStatement();
+                String sent = "SELECT SUM(cantidad) FROM Taller.DetalleCompra WHERE IdMaterial = " + registro[1] ;
+                ResultSet resultSet = st.executeQuery(sent);
+                while (resultSet.next())
+                if (resultSet.getInt(1) < Integer.parseInt(registro[2])) {
+                    return false;
+                }
+            }
+            
             // Checar si tiene llave primaria para insertar el primer elemento de registro registro[0]
             for (int i = 0; i < tabla.Columnas().size(); i++) {
                 if (tabla.tipos.get(i) == 0) { // es entero

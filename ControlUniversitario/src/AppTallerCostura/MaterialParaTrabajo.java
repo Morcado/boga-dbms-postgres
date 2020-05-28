@@ -16,7 +16,6 @@ public class MaterialParaTrabajo extends Tabla {
         columnasInsert.add("IdMaterial");
         columnasInsert.add("Cantidad");
         
-        columnasSelect.add("IdMaterialParaTrabajo");
         columnasSelect.add("IdTrabajo");
         columnasSelect.add("IdMaterial");
         columnasSelect.add("Descripcion");
@@ -30,7 +29,7 @@ public class MaterialParaTrabajo extends Tabla {
         InitializeDeleteQuery();
         InitializeInsertQuery();
         InitializeUpdateQuery();
-        selectSQL = "SELECT IdMaterialParaTrabajo, IdTrabajo, mt.IdMaterial, m.Descripcion, Cantidad FROM Taller.MaterialParaTrabajo AS mt " +
+        selectSQL = "SELECT IdTrabajo, mt.IdMaterial, m.Descripcion, Cantidad FROM Taller.MaterialParaTrabajo AS mt " +
         "INNER JOIN Taller.Material AS m on mt.IdMaterial = m.IdMaterial" ;
     }
 }

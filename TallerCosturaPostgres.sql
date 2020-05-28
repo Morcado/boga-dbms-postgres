@@ -162,21 +162,24 @@ DROP TRIGGER costo_prenda_trigg ON Taller.Trabajo
 CREATE OR REPLACE FUNCTION costo_material_insert() RETURNS TRIGGER AS $$
 BEGIN
     EXECUTE '
-        UPDATE Taller.Prenda AS tp
-        SET tp.CostoMaterial = tmpt.Cantidad * tmpt.PrecioCliente 
-        FROM (Taller.Prenda AS ttp
-        INNER JOIN Taller.Trabajo AS tt
-            ON ttp.IdPrenda = tt.IdPrenda
-        INNER JOIN Taller.MaterialParaTrabajo AS tmpt
-            ON tt.IdTrabajo = tmpt.IdTrabajo)
-        WHERE tp.IdPrenda = ttp.IdPrenda
+        UPDATE Taller.Prenda
+        SET CostoTrabajo = b.Cantidad * c.PrecioCliente 
+        FROM (Taller.Prenda AS d
+	INNER JOIN Taller.Trabajo AS a
+	    ON d.IdPrenda = a.IdPrenda
+        INNER JOIN Taller.MaterialParaTrabajo AS b
+            ON a.IdTrabajo = b.IdTrabajo
+        INNER JOIN Taller.Material AS c
+            ON b.IdMaterial = c.IdMaterial)
+        WHERE d.IdPrenda = a.IdPrenda
     '
     USING NEW;
     RETURN NEW;
     --EXECUTE 'INSERT INTO Prenda' || date_part('quarter', NEW.day) || ' VALUES ($1.*)' USING NEW;
 END;
 $$ LANGUAGE plpgsql;
- 
+
+ DROP TRIGGER costo_material_insert ON Taller.Trabajo ;
 CREATE TRIGGER costo_material_insert BEFORE INSERT ON Taller.Trabajo FOR EACH ROW EXECUTE PROCEDURE costo_material_insert();
  
 
@@ -242,9 +245,9 @@ CREATE OR REPLACE FUNCTION anticipo_confeccion_insert() RETURNS TRIGGER AS $$
 BEGIN
     EXECUTE '
         UPDATE Taller.Confeccion AS tc
-        SET tc.Anticipo = ttc.CostoTotal / 2 
-        FROM (Taller.Confeccion AS ttc)
-        WHERE tc.IdConfeccion = ttdc.IdConfeccion
+        SET Anticipo = ttc.CostoTotal / 2 
+        FROM Taller.Confeccion AS ttc
+        WHERE tc.IdConfeccion = ttc.IdConfeccion
     '
     USING NEW;
     RETURN NEW;
@@ -262,11 +265,8 @@ CREATE TRIGGER anticipo_confeccion_insert BEFORE INSERT ON Taller.Confeccion FOR
 CREATE OR REPLACE FUNCTION subtotal_detallecompra_insert() RETURNS TRIGGER AS $$
 BEGIN
     EXECUTE '
-        UPDATE Taller.DetalleCompra AS tdc
-        SET tdc.Subtotal = ttdc.Cantidad * ttdc.CostoUnitario 
-        FROM (Taller.DetalleCompra AS ttdc
-        )
- 
+        UPDATE Taller.DetalleCompra 
+        SET Subtotal = Cantidad * CostoUnitario 
     '
     USING NEW;
     RETURN NEW;
@@ -275,7 +275,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 DROP TRIGGER subtotal_detallecompra_insert ON Taller.DetalleCompra
-CREATE TRIGGER subtotal_detallecompra_insert BEFORE INSERT ON Taller.DetalleCompra FOR EACH ROW EXECUTE PROCEDURE subtotal_detallecompra_insert();
+CREATE TRIGGER subtotal_detallecompra_insert AFTER INSERT ON Taller.DetalleCompra FOR EACH ROW EXECUTE PROCEDURE subtotal_detallecompra_insert();
 --Pruebas y valores de prueba.
 --Selects
 SELECT * FROM Taller.Confeccion
@@ -298,21 +298,23 @@ INSERT INTO Taller.Empleado( Nombre, ApellidoPaterno, ApellidoMaterno, Telefono,
     VALUES( 'Hans', 'Valdez', 'Sanchez', '5556895623', 'Via Agia, San Luis Potosí' )
  
 --Trabajos
-INSERT INTO Taller.TipoTrabajo( Costo, Nombre ) VALUES( 120, 'Cierre' )
-INSERT INTO Taller.Confeccion( FechaPedido, Anticipo, IdCliente ) VALUES ( NOW(), 50, 1 )
-INSERT INTO Taller.Prenda( Finalizado, IdConfeccion ) VALUES( FALSE, 2 )
-INSERT INTO Taller.Trabajo( IdTipoTrabajo, IdPrenda, IdEmpleado ) VALUES( 1, 5, 1 )
+INSERT INTO Taller.TipoTrabajo( Costo, Nombre ) VALUES( 10, 'Boton' )
+INSERT INTO Taller.Confeccion( FechaPedido, Anticipo, IdCliente ) VALUES ( NOW(), 50, 4 )
+INSERT INTO Taller.Prenda( Finalizado, IdConfeccion ) VALUES( FALSE, 23 )
+INSERT INTO Taller.Trabajo( IdTipoTrabajo, IdPrenda, IdEmpleado ) VALUES(.2 , 11, 1 )
  
 --Provedores y materiales para trabajo.
 INSERT INTO Taller.Material( Descripcion, PrecioCliente ) VALUES( 'Seda', 50 )
-INSERT INTO Taller.Material( Descripcion, PrecioCliente ) VALUES( 'Lino', 40 )
+INSERT INTO Taller.Material( Descripcion, PrecioCliente ) VALUES( 'Cierre', 40 )
 INSERT INTO Taller.Proveedor( Nombre, Telefono, Direccion ) VALUES( 'Luis Nieto', '5554677889', 'Av. Manuel Nava, San Luis Potosí' )
 INSERT INTO Taller.Compra( IdProveedor, FechaCompra, Total ) VALUES( 1, NOW(), 500 )
 INSERT INTO Taller.Compra( IdProveedor, FechaCompra, Total ) VALUES( 1, NOW(), 600 )
 INSERT INTO Taller.DetalleCompra( IdCompra, IdMaterial, CostoUnitario, Cantidad, Subtotal ) VALUES( 1, 1, 50, 10, 500 )
+INSERT INTO Taller.DetalleCompra( IdCompra, IdMaterial, CostoUnitario, Cantidad, Subtotal ) VALUES( 1, 2, 20, 6, 500 )
+INSERT INTO Taller.DetalleCompra( IdCompra, IdMaterial, CostoUnitario, Cantidad, Subtotal ) VALUES( 1, 3, 40, 5, 500 )
 INSERT INTO Taller.DetalleCompra( IdCompra, IdMaterial, CostoUnitario, Cantidad, Subtotal ) VALUES( 3, 2, 40, 10, 400 )
-INSERT INTO Taller.MaterialParaTrabajo( IdMaterial, IdTrabajo, Cantidad) VALUES( 1, 2, 3 )
-INSERT INTO Taller.MaterialParaTrabajo( IdMaterial, IdTrabajo, Cantidad) VALUES( 2, 2, 4 )
+INSERT INTO Taller.MaterialParaTrabajo( IdMaterial, IdTrabajo, Cantidad) VALUES( 1, 28, 3 )
+INSERT INTO Taller.MaterialParaTrabajo( IdMaterial, IdTrabajo, Cantidad) VALUES( 2, 30, 4 )
 
 --Los update e insert sirven para probar los triggers, cada vez que se modifique algo, se actualiza la tabla correspondiente.
 UPDATE Taller.Prenda AS p SET CostoTrabajo = 150 WHERE p.IdPrenda = 2 ;
@@ -330,4 +332,10 @@ SELECT d.IdCompra, c.IdProveedor, m.Descripcion, c.FechaCompra, c.Total FROM Tal
         INNER JOIN Taller.Material AS m ON d.IdMaterial = m.IdMaterial
         INNER JOIN Taller.Compra AS c ON d.IdCompra = c.IdCompra
 
-        SELECT c.IdCompra, c.IdProveedor, d.Nombre, c.FechaCompra, c.Total FROM Taller.Compra AS c INNER JOIN Taller.Proveedor AS d ON c.IdProveedor = c.IdProveedor
+        SELECT * FROM Taller.compra
+
+SELECT d.IdDetalleCompra, d.IdCompra, c.FechaCompra, d.IdMaterial, m.Descripcion, CostoUnitario, Cantidad, Subtotal FROM Taller.DetalleCompra AS d INNER JOIN Taller.Material AS m ON d.IdMaterial = m.IdMaterial INNER JOIN Taller.Compra AS c ON d.IdCompra = c.IdCompra  WHERE d.IdDetalleCompra = 1
+
+SELECT p.IdPrenda, p.IdConfeccion, CONCAT( cl.Nombre,' ',cl.ApellidoPaterno,' ',cl.ApellidoMaterno,' ',TO_CHAR( c.FechaPedido,'HH12:MI:SS') ) AS InfoConfeccion, CostoTrabajo, CostoMaterial, Finalizado FROM Taller.Prenda AS p INNER JOIN Taller.Confeccion AS c ON p.IdConfeccion = c.IdConfeccion INNER JOIN Taller.Cliente AS cl ON c.IdCliente = cl.IdCliente
+
+
