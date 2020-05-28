@@ -81,7 +81,9 @@ CREATE TABLE Taller.Material (
  
     CONSTRAINT PK_MATERIAL PRIMARY KEY( IdMaterial )
 )
- 
+
+DROP TABLE Taller.Material cascade
+
 CREATE TABLE Taller.MaterialParaTrabajo (
     IdTrabajo BIGINT NOT NULL,
     IdMaterial BIGINT NOT NULL,
@@ -90,6 +92,8 @@ CREATE TABLE Taller.MaterialParaTrabajo (
     CONSTRAINT FK_MPT_TIPO_TRABAJO FOREIGN KEY( IdTrabajo ) REFERENCES Taller.Trabajo( IdTrabajo ),
     CONSTRAINT FK_MPT_MATERIAL FOREIGN KEY( IdMaterial ) REFERENCES Taller.Material( IdMaterial )
 )
+
+DROP TABLE TALLER.MATERIALPARATRABAJO
  
 CREATE TABLE Taller.Proveedor (
     IdProveedor BIGSERIAL NOT NULL,
@@ -110,6 +114,8 @@ CREATE TABLE Taller.Compra (
     CONSTRAINT PK_COMPRA PRIMARY KEY (IdCompra),
     CONSTRAINT FK_PROVEEDOR FOREIGN KEY( IdProveedor ) REFERENCES Taller.Proveedor( IdProveedor )
 )
+
+DROP TABLE TALLER.COMPRA CASCADE
  
 CREATE TABLE Taller.DetalleCompra (
     IdDetalleCompra BIGSERIAL NOT NULL,
@@ -122,6 +128,8 @@ CREATE TABLE Taller.DetalleCompra (
     CONSTRAINT FK_DT_COMPRA FOREIGN KEY( IdCompra ) REFERENCES Taller.Compra( IdCompra ),
     CONSTRAINT FK_DT_MATERIAL FOREIGN KEY( IdMaterial ) REFERENCES Taller.Material( IdMaterial )
 )
+
+DRop table taller.detallecompra
 --Triggers
 --TRIGGER 1---
 --1. Al insertar en la tabla "Trabajo" actualiza el "CostoTrabajo" de 
@@ -315,3 +323,11 @@ UPDATE Taller.Prenda AS p SET CostoTrabajo = 120 WHERE p.IdPrenda = 3 ;
 UPDATE Taller.Prenda AS p SET CostoMaterial = 120 WHERE p.IdPrenda = 3 ;
 SELECT * FROM Taller.Confeccion AS c ORDER BY c.IdConfeccion
 
+SELECT * FROM TALLER.COMPRA
+SELECT IdDetalleCompra, d.IdCompra, c.FechaCompra, c.IdProveedor, d.IdMaterial, m.Descripcion, CostoUnitario, Cantidad, Subtotal FROM Taller.DetalleCompra AS d INNER JOIN Taller.Material AS m ON d.IdMaterial = m.IdMaterial INNER JOIN Taller.Compra AS c ON d.IdCompra = c.IdCompra
+
+SELECT d.IdCompra, c.IdProveedor, m.Descripcion, c.FechaCompra, c.Total FROM Taller.DetalleCompra AS d
+        INNER JOIN Taller.Material AS m ON d.IdMaterial = m.IdMaterial
+        INNER JOIN Taller.Compra AS c ON d.IdCompra = c.IdCompra
+
+        SELECT c.IdCompra, c.IdProveedor, d.Nombre, c.FechaCompra, c.Total FROM Taller.Compra AS c INNER JOIN Taller.Proveedor AS d ON c.IdProveedor = c.IdProveedor

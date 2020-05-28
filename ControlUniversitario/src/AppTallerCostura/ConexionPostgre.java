@@ -52,6 +52,43 @@ public class ConexionPostgre {
         return modelo ;
     }
     
+    public List<String[]> RegistrosId( Tabla tabla, int id ) {
+        List<String[]> registros = new ArrayList<>();
+        List<String> columnas = tabla.ColumnasSelect();
+        int numCol = columnas.size();
+        
+        try {
+            Statement statement = tallerCostura.createStatement();
+            ResultSet resultSet = statement.executeQuery( "SELECT IdDetalleCompra, d.IdCompra, c.FechaCompra, d.IdMaterial, m.Descripcion, CostoUnitario, Cantidad, Subtotal FROM Taller.DetalleCompra AS d " +
+"INNER JOIN Taller.Material AS m ON d.IdMaterial = m.IdMaterial " +
+"INNER JOIN Taller.Compra AS c ON d.IdCompra = c.IdCompra" + " WHERE " + tabla.columnasSelect.get(0) +"="+ id );
+            
+            while( resultSet.next() ) {
+                String[] registro = new String[numCol];
+                for( int i = 0 ; i < columnas.size() ; i++ )  {
+                    String valor = resultSet.getString( columnas.get( i ) );
+                    
+                    if( valor == null ) {
+                        registro[i] = " ";
+                        continue ;
+                    }
+                        
+                    registro[i] = valor.equals("f") ? "NO" : valor.equals("t") ? "SI" : valor ;
+                }
+                
+                registros.add( registro );
+            }
+            
+            resultSet.close();
+            statement.close();
+            return registros;
+        }
+        catch( SQLException e ) {
+            System.out.println( e.getMessage() );
+        }
+        return null;
+    }
+    
     public List<String[]> Registros( Tabla tabla ) {
         List<String[]> registros = new ArrayList<>();
         List<String> columnas = tabla.ColumnasSelect();
@@ -59,7 +96,7 @@ public class ConexionPostgre {
         
         try {
             Statement statement = tallerCostura.createStatement();
-            ResultSet resultSet = statement.executeQuery( tabla.selectSQL() );
+            ResultSet resultSet = statement.executeQuery( tabla.selectSQL );
             
             while( resultSet.next() ) {
                 String[] registro = new String[numCol];
