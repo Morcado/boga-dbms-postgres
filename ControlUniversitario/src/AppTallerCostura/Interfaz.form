@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
+<!-- Este archivo es para crear la interfaz del manejador de la base de datos. -->
+<!-- Es generado automáticamente por NETBeans, por lo que no se tuvo parte mas -->
+<!-- que en crear la interfaz gráficamente. -->
+
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>

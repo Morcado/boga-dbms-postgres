@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Controlador de la vista.
+ * Aqui se definen eventos varios, como click en elemento.
  */
 package AppTallerCostura;
 
@@ -30,21 +29,22 @@ import javax.swing.table.TableColumnModel;
  */
 public class Interfaz extends javax.swing.JFrame {
     
-    private ConexionPostgre tallerCostura ;
-    private List<Tabla> tablas ;
-    private Tabla tablaSeleccionada ;
-    private int idRegistroSeleccionado ;
-    private List<String[]> registros;
+    private ConexionPostgre tallerCostura ; //Conexión a la base de datos.
+    private List<Tabla> tablas ;    //Todas las tablas que modelan la base de datos.
+    private Tabla tablaSeleccionada ;   //Tabla selecccionada en el combobox.
+    private int idRegistroSeleccionado ;    //Registro seleccionado en la vista.
+    private List<String[]> registros;   //Los registros de cada tabla.
 
     public Interfaz() {
         initComponents();
         
-        try {
+        try {   //Se intenta crear una conexión.
             tallerCostura = new ConexionPostgre();
         }
         catch( Exception e )    {
             JOptionPane.showMessageDialog(null, e.getMessage() );
         }
+
         tablas = new ArrayList<>();
         /*Agregar las tablas del modelo de la base de datos.*/
         tablas.add( new Cliente() );
@@ -56,7 +56,6 @@ public class Interfaz extends javax.swing.JFrame {
         tablas.add( new Material() );
         tablas.add( new MaterialParaTrabajo() );
         tablas.add( new Proveedor() );
-        
         tablas.add( new DetalleCompra() );
         tablas.add( new Compra() ); //10
         tablas.forEach( c ->  choice1.addItem( c.Nombre() ) );
@@ -66,17 +65,19 @@ public class Interfaz extends javax.swing.JFrame {
     
     public void ShowData( Tabla tabla ) {
         try {
-            //Grid de abajo.
+            //Vista de filas de abajo.
             DefaultTableModel modeloTabla = tallerCostura.CreaModeloTabla( tabla );
             jTable2.setModel( modeloTabla );
             
-            //Grid de arriba
+            //Vista de fila única de arriba.
             DefaultTableModel modeloRegistro = tallerCostura.CreaModeloQuery( tabla );
             jTable1.setModel( modeloRegistro );
             
+            //Se agregan las filas de la tabla a la vista de abajo.
             registros = tallerCostura.Registros( tabla );
             registros.forEach( r -> modeloTabla.addRow( r ) );
             
+            //Se agrega una fila vacia para los inputs.
             String[] registro = new String[tabla.Columnas().size()];
             modeloRegistro.addRow( registro );
             
@@ -87,6 +88,8 @@ public class Interfaz extends javax.swing.JFrame {
     }
 
     public void InsertRegister() {
+        //Se obtiene la cantidad de columnas para crear un contenedor
+        //del mismo tamaño para la información.
         int tam = tablaSeleccionada.Columnas().size();
         String[] registro = new String[tam];
 
@@ -100,9 +103,9 @@ public class Interfaz extends javax.swing.JFrame {
 
         //Tomar los valores del grid de arriba y los mete en registro.
         //Aunque toma en cuenta el id, dentro de insertar se ignora.
-        
         boolean result = tallerCostura.InsertDataTo( registro, tablaSeleccionada );
-        if (result) {
+        if (result) {   //Si fue exitosa la operación...
+            //Actualizamos la vista.
             ShowData( tablaSeleccionada );
         }
         else {
@@ -116,8 +119,10 @@ public class Interfaz extends javax.swing.JFrame {
     }
 
     public void DeleteRegister() {     
+        //Se borra un registro, del cual tenemos su id, y la tabla a la que pertenece.
         boolean result = tallerCostura.DeleteDataFrom( idRegistroSeleccionado, tablaSeleccionada );
-        if (result) {
+        if (result) {   //Si fue exitosa la operación...
+            //Actualizamos la vista.
             ShowData( tablaSeleccionada );
         }
         else {
@@ -126,8 +131,7 @@ public class Interfaz extends javax.swing.JFrame {
     }
 
     public void ModifyRegister() {    
-        //Tomar los valores de grid de arriba y los mete en newInfo.
-
+        //Tomar los valores de los inputs de arriba y los mete en newInfo.
         int tam = tablaSeleccionada.Columnas().size();
         String[] registro = new String[tam];
 
@@ -140,7 +144,8 @@ public class Interfaz extends javax.swing.JFrame {
         }
         
         boolean result = tallerCostura.ModifyRow( idRegistroSeleccionado, registro, tablaSeleccionada );
-        if (result) {
+        if (result) {   //Si fue exitosa la operación...
+            //Se actualizan los datos
             ShowData( tablaSeleccionada );
         }
         else {
@@ -165,7 +170,7 @@ public class Interfaz extends javax.swing.JFrame {
         //Muestra la información del registro seleccionado en el grid de arriba.
 
     }
-    
+    /* ================Esta parte es creada automáticamente por NETBeans.=================== */
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -379,7 +384,7 @@ public class Interfaz extends javax.swing.JFrame {
         frame.pack();
         frame.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
-
+    
     /**
      * @param args the command line arguments
      */
@@ -432,4 +437,5 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JTable jTable2;
     private java.awt.Label label1;
     // End of variables declaration//GEN-END:variables
+    /* ==========================Fin de la parte creada por NETBeans=================== */
 }

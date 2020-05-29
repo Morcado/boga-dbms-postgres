@@ -1,7 +1,9 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Esta clase es la clase padre a todas las tablas.
+ * Aquí se crean las sentencias de INSERT, UPDATE, y DELETE con 
+ * las columnas de las tablas.
+ * Si la tabla no necesita de una sentencia SELECT especial, también
+ * se crea aquí.
  */
 package AppTallerCostura;
 import java.util.*;  
@@ -26,6 +28,7 @@ public class Tabla {
     protected String updateSQL ;
     protected String deleteSQL ;
     
+    /* Se inicializa el nombre y las listas. */
     public Tabla( String nombre )   {
         this.nombre = nombre ;
         tipos = new ArrayList<>();
@@ -33,10 +36,15 @@ public class Tabla {
         columnasInsert = new ArrayList<>();
     }
     
+    /* Se crea la sentencia SELECT. */
+    /* Bastante gracioso, se puede llamar un método de la clase padre */
+    /* en el constructor de la clase hijo por que ya fue inicializada */
+    /* con super(). */
     public void InitializeSelectQuery() {
         selectSQL = "SELECT * FROM Taller." + nombre;
     }
     
+    /* Se crea la sentencia DELETE */
     public void InitializeDeleteQuery() {
         String delete = "DELETE FROM Taller." + nombre ;
         
@@ -47,6 +55,7 @@ public class Tabla {
         deleteSQL = delete ;
     }
     
+    /* Se crea la sentencia UPDATE */
     public void InitializeUpdateQuery()    {
         //Inicializar las cadenas de update y delete para cada tabla.
         //Este método se llama en el constructor de la tabla especifica.
@@ -66,6 +75,7 @@ public class Tabla {
         updateSQL = update ;
     }
     
+    /* Se crea la sentencia INSERT. */
     public void InitializeInsertQuery()    {
         //Inicializar las cadenas de update y delete para cada tabla.
         //Este método se llama en el constructor de la tabla especifica.
@@ -89,6 +99,7 @@ public class Tabla {
         insertSQL = insert ;
     }
     
+    /* ===== GETTERS ===== */
     public String Nombre()  {
         return nombre ;
     }

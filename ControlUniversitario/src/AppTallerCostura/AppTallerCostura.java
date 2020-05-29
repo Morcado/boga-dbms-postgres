@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Este es el punto de entrada de la aplicación.
  */
 package AppTallerCostura;
 
@@ -12,11 +10,11 @@ package AppTallerCostura;
 public class AppTallerCostura {
 
     /**
-     * @param args the command line arguments
+     * @param args son los argumentos de linea de comandos.
      */
     public static void main(String[] args) {
-        Interfaz manejador = new Interfaz();
-        manejador.setVisible(true);
+        Interfaz manejador = new Interfaz();    //Crea nuestra ventana.
+        manejador.setVisible(true);             //La muestra.
     }
     
 }

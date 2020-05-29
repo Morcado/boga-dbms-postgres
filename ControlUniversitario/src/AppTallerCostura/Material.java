@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Esta clase representa la tabla Material.
  */
 package AppTallerCostura;
 
@@ -11,18 +9,26 @@ package AppTallerCostura;
  */
 public class Material extends Tabla {
     public Material()   {
-        super("Material");
+        super("Material");  //Constructor de la clase padre; inicializa las listas y el nombre de la tabla.
+
+        //Las columnas insert se utilizan para la sentencia INSERT.
         columnasInsert.add("Descripcion");
         columnasInsert.add("PrecioCliente");
         
+        //Las columnas select sirven para las columnas de las filas 
+        //que se muestran en la vista.
         columnasSelect.add("IdMaterial");
         columnasSelect.add("Descripcion");
         columnasSelect.add("PrecioCliente");
                 
-        //0 = int, 1 = string, 2 = double o float, 3 = date, 4 = boolean
+        //Se agregan los tipos de datos de cada columna.
+        //El orden es el de columnasInsert.
+        //0 = int, 1 = string, 2 = float, 3 = date, 4 = boolean, 5 = date
         tipos.add(1);
         tipos.add(0);
         
+        //Las sentencias que se utilizan para la base de datos se inicializan programaticamente,
+        //con las listas de columnasInsert y columnasSelect.
         InitializeDeleteQuery();
         InitializeInsertQuery();
         InitializeUpdateQuery();

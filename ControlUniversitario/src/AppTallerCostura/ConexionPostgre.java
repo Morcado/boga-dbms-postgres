@@ -1,7 +1,6 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Esta clase controla la conexión a la base de datos.
+ * Aqui se define la cadena de conexión, el usuario y la contraseña.
  */
 package AppTallerCostura;
 import java.sql.Connection;
@@ -18,11 +17,19 @@ import static jdk.nashorn.internal.objects.NativeMath.round;
  * @author LuisN
  */
 public class ConexionPostgre {
-    private String url = "jdbc:postgresql://localhost:5432/BD_BOGA";
-    private String usuario = "postgres"; //postgres, admin, consultor
-    private String contraseña = "consultor"; //Son las mismas que el nombre de usuario, ej. la de postgres es postgres
-    private Connection tallerCostura ;
+    private String url = "jdbc:postgresql://localhost:5432/BD_BOGA";    //Cadena de conexión de la base de datos.
+
+    /* La base de datos tiene tres usuarios:
+    *  postgres: Es el dueño de la base de datos, tiene todos los permisos.
+    *  admin: Puede hacer SELECT, INSERT, y UPDATE, pero no puede hacer DELETE.
+    *  consultor: Solamente puede hacer SELECT.
+    */
+    private String usuario = "postgres";
+
+    private String contraseña = "postgres"; //Son las mismas que el nombre de usuario, ej. la de admin es admin.
+    private Connection tallerCostura ;  //Instancia de una conexión a la base de datos.
     
+    /* Intenta conectarse, si no puede marca una excepción, pero no truena la aplicación. */
     public ConexionPostgre()  {
         try {
             this.tallerCostura = DriverManager.getConnection( url, usuario, contraseña );
@@ -32,6 +39,10 @@ public class ConexionPostgre {
         }
     }
     
+    /* Crea un modelo de tabla para la vista, basado en las columnas de la tabla.
+    *  Las columnasSelect abarcan también columnas que no existen en la tabla, sino
+    *  que son creadas por un inner join con la sentencia SELECT de cada tabla. 
+    */
     public DefaultTableModel CreaModeloTabla( Tabla tabla ) {
         DefaultTableModel modelo = new DefaultTableModel();
         
@@ -42,6 +53,7 @@ public class ConexionPostgre {
         return modelo ;
     }
     
+    /* Crea un modelo para los inputs de información. */
     public DefaultTableModel CreaModeloQuery( Tabla tabla ) {
         DefaultTableModel modelo = new DefaultTableModel();
         
@@ -52,6 +64,7 @@ public class ConexionPostgre {
         return modelo ;
     }
     
+    /* Regresa las filas de la tabla. */
     public List<String[]> RegistrosId( Tabla tabla, int id ) {
         List<String[]> registros = new ArrayList<>();
         List<String> columnas = tabla.ColumnasSelect();
@@ -89,15 +102,18 @@ public class ConexionPostgre {
         return null;
     }
     
+    /* Regresa las filas de la tabla */
     public List<String[]> Registros( Tabla tabla ) {
         List<String[]> registros = new ArrayList<>();
         List<String> columnas = tabla.ColumnasSelect();
         int numCol = columnas.size();
         
-        try {
+        try {   //Intenta crear un query determinado por la tabla y ejecutarlo.
             Statement statement = tallerCostura.createStatement();
             ResultSet resultSet = statement.executeQuery( tabla.selectSQL );
             
+            //Como los resultados están en un enumerador diferido, se cicla mientras
+            //devuelva alguno.
             while( resultSet.next() ) {
                 String[] registro = new String[numCol];
                 for( int i = 0 ; i < columnas.size() ; i++ )  {
@@ -108,12 +124,15 @@ public class ConexionPostgre {
                         continue ;
                     }
                         
+                    //Cambia los valores booleanos 't' y 'f' a "SI" y "NO" para hacerlos más legibles
+                    //en la vista.
                     registro[i] = valor.equals("f") ? "NO" : valor.equals("t") ? "SI" : valor ;
                 }
                 
                 registros.add( registro );
             }
             
+            //Se cierra la conexión.
             resultSet.close();
             statement.close();
             return registros ;
@@ -125,9 +144,9 @@ public class ConexionPostgre {
         return null;
     }
     
+    /* Controla la inserción a la base de datos. */
     public boolean InsertDataTo( String[] registro, Tabla tabla )  {
-        //Insertar un registro en la tabla.
-        try {
+        try {   //Insertar un registro en la tabla.
             PreparedStatement statement = tallerCostura.prepareStatement( tabla.insertSQL );
 
             if (tabla.nombre == "MaterialParaTrabajo") {
@@ -141,6 +160,7 @@ public class ConexionPostgre {
             }
             
             // Checar si tiene llave primaria para insertar el primer elemento de registro registro[0]
+            //El primer valor del registro es el id, como es autonúmerico ignorar.
             for (int i = 0; i < tabla.Columnas().size(); i++) {
                 if (tabla.tipos.get(i) == 0) { // es entero
                     statement.setInt(i + 1, Integer.parseInt(registro[i]));
@@ -174,7 +194,6 @@ public class ConexionPostgre {
             System.out.println("Errorrrrrr: " + e.getMessage());
             return false;
         }
-        //El primer valor del registro es el id, como es autonúmerico ignorar.
     }
     
     public boolean DeleteDataFrom( int idRegistro, Tabla tabla )    {
