@@ -19,8 +19,8 @@ import static jdk.nashorn.internal.objects.NativeMath.round;
  */
 public class ConexionPostgre {
     private String url = "jdbc:postgresql://localhost:5432/BD_BOGA";
-    private String usuario = "postgres";
-    private String contraseña = "postgres";
+    private String usuario = "postgres"; //postgres, admin, consultor
+    private String contraseña = "consultor"; //Son las mismas que el nombre de usuario, ej. la de postgres es postgres
     private Connection tallerCostura ;
     
     public ConexionPostgre()  {

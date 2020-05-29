@@ -38,7 +38,13 @@ public class Interfaz extends javax.swing.JFrame {
 
     public Interfaz() {
         initComponents();
-        tallerCostura = new ConexionPostgre();
+        
+        try {
+            tallerCostura = new ConexionPostgre();
+        }
+        catch( Exception e )    {
+            JOptionPane.showMessageDialog(null, e.getMessage() );
+        }
         tablas = new ArrayList<>();
         /*Agregar las tablas del modelo de la base de datos.*/
         tablas.add( new Cliente() );

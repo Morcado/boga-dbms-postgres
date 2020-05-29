@@ -129,7 +129,7 @@ CREATE TABLE Taller.DetalleCompra (
     CONSTRAINT FK_DT_MATERIAL FOREIGN KEY( IdMaterial ) REFERENCES Taller.Material( IdMaterial )
 )
 
-DRop table taller.detallecompra
+DROP TABLE taller.detallecompra
 --Triggers
 --TRIGGER 1---
 --1. Al insertar en la tabla "Trabajo" actualiza el "CostoTrabajo" de 
@@ -276,7 +276,109 @@ $$ LANGUAGE plpgsql;
 
 DROP TRIGGER subtotal_detallecompra_insert ON Taller.DetalleCompra
 CREATE TRIGGER subtotal_detallecompra_insert AFTER INSERT ON Taller.DetalleCompra FOR EACH ROW EXECUTE PROCEDURE subtotal_detallecompra_insert();
---Pruebas y valores de prueba.
+ 
+--Usuarios y permisos.
+ALTER USER admin WITH PASSWORD 'admin' ;
+ALTER USER consultor WITH PASSWORD 'consultor' ;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA Taller TO consultor ;
+
+REVOKE ALL PRIVILEGES ON SCHEMA Taller FROM consultor ;
+GRANT USAGE ON SCHEMA Taller TO consultor ;
+
+REVOKE ALL ON Taller.Cliente FROM consultor ;
+GRANT SELECT ON Taller.Cliente TO consultor ;
+
+REVOKE ALL ON Taller.Compra FROM consultor ;
+GRANT SELECT ON Taller.Compra TO consultor ;
+
+REVOKE ALL ON Taller.Confeccion FROM consultor ;
+GRANT SELECT ON Taller.Confeccion TO consultor ;
+
+REVOKE ALL ON Taller.DetalleCompra FROM consultor ;
+GRANT SELECT ON Taller.DetalleCompra TO consultor ;
+
+REVOKE ALL ON Taller.Empleado FROM consultor ;
+GRANT SELECT ON Taller.Empleado TO consultor ;
+
+REVOKE ALL ON Taller.Material FROM consultor ;
+GRANT SELECT ON Taller.Material TO consultor ;
+
+REVOKE ALL ON Taller.MaterialParaTrabajo FROM consultor ;
+GRANT SELECT ON Taller.MaterialParaTrabajo TO consultor ;
+
+REVOKE ALL ON Taller.Prenda FROM consultor ;
+GRANT SELECT ON Taller.Prenda TO consultor ;
+
+REVOKE ALL ON Taller.Proveedor FROM consultor ;
+GRANT SELECT ON Taller.Proveedor TO consultor ;
+
+REVOKE ALL ON Taller.TipoTrabajo FROM consultor ;
+GRANT SELECT ON Taller.TipoTrabajo TO consultor ;
+
+REVOKE ALL ON Taller.Trabajo FROM consultor ;
+GRANT SELECT ON Taller.Trabajo TO consultor ;
+
+
+REVOKE ALL PRIVILEGES ON SCHEMA Taller FROM admin ;
+GRANT USAGE ON SCHEMA Taller TO admin ;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA Taller TO admin ;
+
+REVOKE ALL ON Taller.Cliente FROM admin ;
+GRANT SELECT ON Taller.Cliente TO admin ;
+GRANT INSERT ON Taller.Cliente TO admin ;
+GRANT UPDATE ON Taller.Cliente TO admin ;
+
+REVOKE ALL ON Taller.Compra FROM admin ;
+GRANT SELECT ON Taller.Compra TO admin ;
+GRANT INSERT ON Taller.Compra TO admin ;
+GRANT UPDATE ON Taller.Compra TO admin ;
+
+REVOKE ALL ON Taller.Confeccion FROM admin ;
+GRANT SELECT ON Taller.Confeccion TO admin ;
+GRANT INSERT ON Taller.Confeccion TO admin ;
+GRANT UPDATE ON Taller.Confeccion TO admin ;
+
+REVOKE ALL ON Taller.DetalleCompra FROM admin ;
+GRANT SELECT ON Taller.DetalleCompra TO admin ;
+GRANT INSERT ON Taller.DetalleCompra TO admin ;
+GRANT UPDATE ON Taller.DetalleCompra TO admin ;
+
+REVOKE ALL ON Taller.Empleado FROM admin ;
+GRANT SELECT ON Taller.Empleado TO admin ;
+GRANT INSERT ON Taller.Empleado TO admin ;
+GRANT UPDATE ON Taller.Empleado TO admin ;
+
+REVOKE ALL ON Taller.Material FROM admin ;
+GRANT SELECT ON Taller.Material TO admin ;
+GRANT INSERT ON Taller.Material TO admin ;
+GRANT UPDATE ON Taller.Material TO admin ;
+
+REVOKE ALL ON Taller.MaterialParaTrabajo FROM admin ;
+GRANT SELECT ON Taller.MaterialParaTrabajo TO admin ;
+GRANT INSERT ON Taller.MaterialParaTrabajo TO admin ;
+GRANT UPDATE ON Taller.MaterialParaTrabajo TO admin ;
+
+REVOKE ALL ON Taller.Prenda FROM admin ;
+GRANT SELECT ON Taller.Prenda TO admin ;
+GRANT INSERT ON Taller.Prenda TO admin ;
+GRANT UPDATE ON Taller.Prenda TO admin ;
+
+REVOKE ALL ON Taller.Proveedor FROM admin ;
+GRANT SELECT ON Taller.Proveedor TO admin ;
+GRANT INSERT ON Taller.Proveedor TO admin ;
+GRANT UPDATE ON Taller.Proveedor TO admin ;
+
+REVOKE ALL ON Taller.TipoTrabajo FROM admin ;
+GRANT SELECT ON Taller.TipoTrabajo TO admin ;
+GRANT INSERT ON Taller.TipoTrabajo TO admin ;
+GRANT UPDATE ON Taller.TipoTrabajo TO admin ;
+
+REVOKE ALL ON Taller.Trabajo FROM admin ;
+GRANT SELECT ON Taller.Trabajo TO admin ;
+GRANT INSERT ON Taller.Trabajo TO admin ;
+GRANT UPDATE ON Taller.Trabajo TO admin ; 
+ 
+--Pruebas y valores de prueba.--
 --Selects
 SELECT * FROM Taller.Confeccion
 SELECT * FROM Taller.Proveedor
@@ -289,8 +391,7 @@ SELECT * FROM Taller.Trabajo
 SELECT * FROM Taller.TipoTrabajo
 SELECT * FROM Taller.MaterialParaTrabajo
 SELECT * FROM Taller.Cliente
- 
- 
+
 --Inserción de valores de prueba.
 --Cliente y empleado
 INSERT INTO Taller.Cliente( Nombre, ApellidoPaterno, ApellidoMaterno, Telefono ) VALUES( 'Juan', 'Wagner', 'Gutenberg', '5554895623' )
